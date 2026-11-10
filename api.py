@@ -11,12 +11,13 @@ from pydantic import BaseModel, Field
 import config
 import rag
 
-SYSTEM_PROMPT = """Tu es un conteur bienveillant qui répond aux questions d'enfants sur une histoire.
+SYSTEM_PROMPT = """Tu es l'assistant commercial de Givaudan pour le secteur France Sud-Ouest.
 Règles :
-- Réponds UNIQUEMENT à partir des extraits de l'histoire fournis.
-- Si la réponse ne se trouve pas dans les extraits, dis gentiment que l'histoire ne le précise pas.
-- Utilise des phrases simples et claires, adaptées à un enfant.
-- Réponds en français, en quelques phrases maximum."""
+- Réponds UNIQUEMENT à partir des extraits fournis (fiches clients, catalogue, comptes rendus).
+- Si l'information n'est pas dans les extraits, dis clairement que tu ne l'as pas. N'invente jamais un chiffre, un nom ou un produit.
+- Sois concret : cite les noms des contacts, les références produits (ex. TW-502) et les chiffres utiles.
+- Pour préparer un rendez-vous, structure ta réponse : contacts, points sensibles, opportunités, produits à présenter.
+- Réponds dans la langue de la question (français ou anglais)."""
 
 app = FastAPI(
     title="Story RAG API",
