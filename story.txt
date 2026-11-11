@@ -1,28 +1,30 @@
-Base de connaissances commerciale — Givaudan, divisions Taste & Wellbeing et Fragrance & Beauty, secteur France Sud-Ouest (données fictives créées pour le hackathon, équipe Casque)
+Base de connaissances commerciale et Digital Twins clients — Givaudan, secteur France Sud-Ouest (données entièrement fictives créées pour le Givaudan AI Innovation Challenge, équipe Casque)
 
 I. Présentation du secteur et règles commerciales
 
-Le secteur France Sud-Ouest est suivi par la commerciale Camille Arnaud, basée à Bordeaux. Il regroupe huit comptes actifs dans l'agroalimentaire, les boissons et la cosmétique, ainsi que trois prospects identifiés. Le responsable régional est Thomas Lefèvre ; toute remise supérieure à 8 % doit être validée par lui.
+Le secteur France Sud-Ouest est suivi par la commerciale Camille Arnaud, basée à Bordeaux. Il regroupe six clients actifs dans l'agroalimentaire, les boissons et la cosmétique, un client perdu à reconquérir et trois prospects identifiés. Le responsable régional est Thomas Lefèvre ; toute remise supérieure à 8 % doit être validée par lui.
 
 Règles de prix : la remise standard est de 3 % au-delà de 500 kg commandés par an pour un même arôme, et de 5 % au-delà de 2 tonnes. Les remises de 6 à 8 % sont possibles pour un contrat de deux ans minimum. Les prix sont révisés chaque année au 1er janvier, avec un préavis de 60 jours envoyé au client.
 
 Échantillons : un client peut recevoir jusqu'à 5 échantillons gratuits par trimestre. Le délai d'envoi d'un échantillon standard est de 5 jours ouvrés. Un échantillon sur mesure (développement spécifique) demande 3 semaines. Les échantillons sont envoyés en flacon de 50 ml pour les arômes liquides et en sachet de 100 g pour les poudres.
 
-Délais de livraison : 10 jours ouvrés pour un produit catalogue en stock, 6 semaines pour une première production sur mesure. La commande minimum est de 25 kg par référence.
+Délais de livraison : 10 jours ouvrés pour un produit catalogue en stock, 6 semaines pour une première production sur mesure. La commande minimum est de 25 kg par référence. Un stock de sécurité réservé au client est possible à partir de 1 tonne par an.
 
 II. Catalogue Taste & Wellbeing — arômes alimentaires
 
-TW-104 Vanille Bourbon Naturelle : arôme naturel liquide, base alcool, issu de gousses de Madagascar. Dosage recommandé : 0,1 à 0,3 % dans les produits laitiers, 0,2 à 0,5 % dans la pâtisserie. Stable jusqu'à 180 °C. Durée de conservation : 18 mois à température ambiante, à l'abri de la lumière. Prix catalogue : 142 € le kilo. Certifié halal et casher.
+TW-104 Vanille Bourbon Naturelle : arôme naturel liquide, base alcool, issu de gousses de Madagascar. Dosage recommandé : 0,1 à 0,3 % dans les produits laitiers, 0,2 à 0,5 % dans la pâtisserie. Stable jusqu'à 180 °C. Durée de conservation : 18 mois à température ambiante, à l'abri de la lumière. Prix catalogue : 142 € le kilo. Certifié halal et casher. Certificat d'origine disponible sur demande.
 
-TW-221 Fraise Gariguette : arôme naturel liquide, base eau. Dosage recommandé : 0,05 à 0,15 % dans les boissons, 0,2 % dans les yaourts. Non stable au-delà de 90 °C : déconseillé en cuisson. Durée de conservation : 12 mois, stockage entre 4 et 8 °C conseillé. Prix catalogue : 98 € le kilo.
+TW-221 Fraise Gariguette : arôme naturel liquide, base eau. Dosage recommandé : 0,05 à 0,15 % dans les boissons, 0,2 % dans les yaourts. Non stable au-delà de 90 °C : déconseillé en cuisson. Durée de conservation : 12 mois, stockage entre 4 et 8 °C conseillé. Prix catalogue : 98 € le kilo. Une version encapsulée, TW-221E, garde son intensité 6 semaines en rayon au lieu de 3, pour 112 € le kilo.
 
-TW-310 Citron Yuzu : arôme naturel liquide, émulsion pour boissons gazeuses. Dosage recommandé : 0,08 à 0,12 % en soda. Résiste à un pH acide jusqu'à 2,8. Durée de conservation : 9 mois. Prix catalogue : 115 € le kilo. Produit phare de la gamme boissons depuis 2025.
+TW-310 Citron Yuzu : arôme naturel liquide, émulsion pour boissons gazeuses. Dosage recommandé : 0,08 à 0,12 % en soda. Résiste à un pH acide jusqu'à 2,8. Durée de conservation : 9 mois. Prix catalogue : 115 € le kilo. Produit phare de la gamme boissons depuis 2025. Il n'a été testé qu'en boisson : sa tenue à la cuisson n'est pas connue.
 
 TW-415 Caramel Beurre Salé : arôme naturel en poudre, support maltodextrine. Dosage recommandé : 0,3 à 0,6 % dans les biscuits et céréales. Stable jusqu'à 220 °C. Durée de conservation : 24 mois. Prix catalogue : 76 € le kilo. Contient du lait (allergène à déclarer).
 
-TW-502 Réducteur de sucre SweetBalance : modulateur de goût en poudre qui permet de réduire jusqu'à 30 % le sucre ajouté sans perte de goût sucré. Dosage : 0,02 à 0,05 %. Compatible boissons, produits laitiers et biscuits. Prix catalogue : 310 € le kilo. Produit stratégique : objectif secteur de 3 nouveaux clients en 2026.
+TW-502 Réducteur de sucre SweetBalance : modulateur de goût en poudre qui permet de réduire jusqu'à 30 % le sucre ajouté sans perte de goût sucré. Dosage : 0,02 à 0,05 %. Compatible boissons, produits laitiers et biscuits ; sans effet sur la texture des yaourts aux doses recommandées. Prix catalogue : 310 € le kilo. Produit stratégique : objectif secteur de 3 nouveaux clients en 2026.
 
 TW-618 Masqueur d'amertume ProMask : améliore le goût des protéines végétales (pois, soja, fève). Dosage : 0,1 à 0,2 %. Stable jusqu'à 140 °C. Prix catalogue : 185 € le kilo. Utilisé surtout dans les boissons protéinées et les alternatives à la viande.
+
+Aucun arôme alimentaire du catalogue n'est certifié bio. Aucun produit du catalogue n'est conçu pour les bières sans alcool : il faut un développement sur mesure.
 
 III. Catalogue Fragrance & Beauty — compositions parfumées
 
@@ -34,11 +36,29 @@ FB-089 Linge Frais Hypoallergénique : composition pour lessives et adoucissants
 
 FB-112 Ambre Solaire Bio : composition certifiée COSMOS (naturelle et bio) pour huiles et laits solaires. Dosage : 0,3 à 0,6 %. Point éclair : 85 °C. Allergène à déclarer : coumarine. Prix : 245 € le kilo.
 
-IV. Fiche client — Laiterie des Pyrénées
+IV. Techniques d'argumentaire utilisées par l'équipe commerciale
+
+Méthode DISC, pour adapter sa façon de parler au profil du client. Dominant : pressé, veut des résultats et des chiffres ; aller droit au but. Influent : chaleureux, aime les histoires et la relation ; laisser parler, montrer de l'enthousiasme. Stable : prudent, n'aime pas le changement ; rassurer, avancer pas à pas. Consciencieux : précis, veut des preuves et des documents ; apporter des données techniques.
+
+Méthode SONCAS, pour trouver la motivation d'achat dominante : Sécurité (peur du risque), Orgueil (image, prestige), Nouveauté (innovation), Confort (simplicité), Argent (prix, rentabilité), Sympathie (relation humaine). On choisit ses arguments selon le ou les mobiles dominants du client.
+
+Méthode SPIN, pour la découverte : questions de Situation (comment travaillez-vous aujourd'hui ?), de Problème (qu'est-ce qui ne va pas ?), d'Implication (quelles conséquences pour vous ?) et de Bénéfice (qu'est-ce que cela vous apporterait si c'était réglé ?). Un client ne révèle ses vrais enjeux qu'aux commerciaux qui posent des questions d'implication.
+
+Méthode CAP, pour présenter un produit : Caractéristique (ce que c'est), Avantage (ce que cela change pour ce client), Preuve (donnée chiffrée, test, référence). Exemple : SweetBalance (caractéristique) permet de réduire le sucre de 30 % sans perte de goût (avantage), comme le montrent les tests sur yaourt (preuve).
+
+Traitement des objections en quatre temps : écouter sans interrompre, questionner pour comprendre la vraie raison, reformuler, puis répondre avec une preuve et vérifier que le client est satisfait. Ne jamais contredire frontalement ni dénigrer un concurrent.
+
+V. Sources utilisées pour construire les Digital Twins
+
+Un Digital Twin client ne repose pas seulement sur LinkedIn. L'équipe croise : les comptes rendus de visite et réclamations internes ; les articles de presse régionale et économique (Sud Ouest, La République des Pyrénées, Les Echos) ; les sites web et rapports annuels ou RSE des clients ; les offres d'emploi publiées, qui révèlent les projets à venir ; les salons professionnels et conférences ; les réseaux sociaux de l'entreprise (Instagram, Facebook) ; les avis consommateurs sur les produits du client ; les annonces légales et levées de fonds.
+
+Chaque profil indique ses sources. Une information sans source n'est pas utilisée. Les traits de personnalité sont des hypothèses de travail à confirmer pendant les rendez-vous, pas des certitudes.
+
+VI. Fiche client — Laiterie des Pyrénées
 
 Laiterie des Pyrénées est une coopérative laitière basée à Oloron-Sainte-Marie, avec 140 salariés. Elle produit des yaourts, des crèmes desserts et des fromages frais vendus en grande distribution sous sa propre marque et en marque distributeur.
 
-Contact principal : Hélène Bordes, responsable R&D. Contact achats : Marc Etchegaray, acheteur. Hélène décide du choix technique, Marc négocie le prix et les délais.
+Contacts : Hélène Bordes, responsable R&D, décide du choix technique ; Marc Etchegaray, acheteur, négocie le prix et les délais.
 
 Produits achetés : TW-104 Vanille Bourbon (1,8 tonne par an) et TW-221 Fraise Gariguette (900 kg par an). Chiffre d'affaires 2025 avec Givaudan : 344 000 €. Remise actuelle : 5 %. Client depuis 2019.
 
@@ -46,7 +66,7 @@ Points sensibles : en mars 2026, une livraison de TW-221 est arrivée avec 9 jou
 
 Opportunités : la laiterie veut lancer en 2027 une gamme de yaourts « moins sucrés » pour répondre au Nutri-Score. Le produit TW-502 SweetBalance n'a pas encore été présenté.
 
-V. Compte rendu de visite — Laiterie des Pyrénées, 14 octobre 2026
+VII. Compte rendu de visite — Laiterie des Pyrénées, 14 octobre 2026
 
 Visite réalisée par Camille Arnaud avec Hélène Bordes et Marc Etchegaray. Durée : 1 h 30.
 
@@ -56,7 +76,47 @@ Décisions : envoyer deux échantillons de fraise plus stables avant le 15 novem
 
 Prochaine étape : présentation de SweetBalance lors du prochain rendez-vous, prévu le 3 décembre 2026 à Oloron.
 
-VI. Fiche client — Biscuiterie Maison Larrieu
+VIII. Digital Twin — Marc Etchegaray, acheteur, Laiterie des Pyrénées
+
+Identité : acheteur de la coopérative depuis 2011, plus de vingt ans d'expérience aux achats agroalimentaires. Il vouvoie toujours ses fournisseurs.
+
+Personnalité : profil DISC Dominant. Mobiles SONCAS principaux : Argent et Sécurité. Il est pressé, direct, parfois sec. Il coupe la parole quand le discours devient général.
+
+Façon de parler : phrases courtes, chiffres, aucune politesse inutile. Phrases typiques : « Donnez-moi un chiffre. » ; « Je ne signe rien sans garantie écrite. » ; « Le marketing, gardez-le pour Hélène. »
+
+Critères de décision, par ordre d'importance : 1. le prix ; 2. la fiabilité des livraisons ; 3. les conditions de paiement.
+
+Ce qui le convainc : un engagement écrit sur les délais, avec pénalités de retard ; un calcul du coût total ; une réponse précise à la question posée.
+
+Ce qui l'agace : qu'on minimise le retard de mars 2026 ; les réponses vagues ; qu'on parle de qualité sans chiffre.
+
+Objections typiques : « Symrise est 12 % moins cher. » ; « Qui me garantit que mars ne se reproduira pas ? » ; « Votre remise de 2 %, c'est symbolique. »
+
+Ce qu'il ne dit que si on lui pose les bonnes questions : le budget arômes 2027 de la coopérative est limité à une hausse de 2 % maximum. Il a déjà reçu les échantillons de fraise de Symrise, et Hélène les trouve moins bons que TW-221 ; il ne le révèle que si on lui demande ce que la R&D pense des tests. Un stock de sécurité réglerait pour lui la question des délais.
+
+Sources : compte rendu de visite du 14 octobre 2026 ; courrier de réclamation de mars 2026 ; rapport annuel 2025 de la coopérative, qui mentionne la hausse du prix du lait et la pression sur les marges.
+
+IX. Digital Twin — Hélène Bordes, responsable R&D, Laiterie des Pyrénées
+
+Identité : ingénieure agroalimentaire, responsable R&D depuis 2018.
+
+Personnalité : profil DISC Consciencieux. Mobiles SONCAS principaux : Sécurité et Nouveauté. Calme, curieuse, elle prend des notes et pose beaucoup de questions techniques.
+
+Façon de parler : vocabulaire technique, questions précises sur le dosage, la stabilité, la durée de conservation et l'étiquetage. Phrases typiques : « Vous avez des données de stabilité ? » ; « À quel dosage exactement ? » ; « Il faudra que je le teste en labo. »
+
+Critères de décision : 1. la qualité gustative ; 2. la stabilité en rayon ; 3. un étiquetage « arôme naturel » compatible avec le Nutri-Score.
+
+Ce qui la convainc : des fiches techniques chiffrées, des échantillons rapides, un accompagnement en laboratoire.
+
+Ce qui l'agace : un commercial qui ne connaît pas les fiches techniques ; les promesses sans données.
+
+Objections typiques : « La fraise perd son intensité après 3 semaines. » ; « SweetBalance, ça change la texture du yaourt ? »
+
+Ce qu'elle ne dit que si on lui pose les bonnes questions : la gamme moins sucrée vise une réduction de 25 % du sucre, pour un lancement en septembre 2027. Elle doit présenter une solution à son comité de direction en février 2027. Elle préfère Givaudan à Symrise sur le goût et serait prête à défendre une fraise plus chère si elle tient 6 semaines en rayon.
+
+Sources : compte rendu de visite du 14 octobre 2026 ; conférence d'Hélène Bordes sur la réduction du sucre au salon CFIA de Rennes en mars 2026 ; offre d'emploi de la laiterie pour un « technicien R&D formulation allégée » publiée en septembre 2026.
+
+X. Fiche client — Biscuiterie Maison Larrieu
 
 Biscuiterie Maison Larrieu est une entreprise familiale basée à Pau, fondée en 1962, avec 65 salariés. Elle fabrique des biscuits haut de gamme vendus en épiceries fines et à l'export (Belgique, Japon).
 
@@ -64,59 +124,157 @@ Contact principal : Sophie Larrieu, directrice générale et petite-fille du fon
 
 Produits achetés : TW-415 Caramel Beurre Salé (650 kg par an) et TW-104 Vanille Bourbon (300 kg par an). Chiffre d'affaires 2025 : 92 000 €. Remise actuelle : 3 %. Client depuis 2021.
 
-Points sensibles : la cliente est très attachée à l'image « artisanale » et refuse tout arôme qui ne soit pas naturel. Elle a demandé en septembre 2026 un certificat d'origine pour la vanille, toujours pas envoyé.
+Points sensibles : la cliente refuse tout arôme qui ne soit pas naturel. Elle a demandé en septembre 2026 un certificat d'origine pour la vanille, toujours pas envoyé.
 
-Opportunités : Maison Larrieu prépare une collection de Noël 2027 autour des agrumes. Le TW-310 Citron Yuzu pourrait convenir, mais il faudra vérifier sa tenue à la cuisson, car il n'est testé qu'en boisson.
+Opportunités : Maison Larrieu prépare une collection de Noël 2027 autour des agrumes. Le TW-310 Citron Yuzu pourrait convenir, mais sa tenue à la cuisson doit d'abord être testée.
 
-VII. Fiche client — BoissonSud
+XI. Digital Twin — Sophie Larrieu, directrice générale, Maison Larrieu
+
+Identité : troisième génération à la tête de la biscuiterie familiale, directrice générale depuis 2015.
+
+Personnalité : profil DISC Influent. Mobiles SONCAS principaux : Orgueil et Sympathie. Chaleureuse, fière de l'histoire de sa maison, elle décide à l'intuition et à la confiance.
+
+Façon de parler : elle raconte des anecdotes sur son grand-père et sur ses clients japonais, n'aime pas le jargon. Phrases typiques : « Chez nous, tout est fait comme en 1962. » ; « Racontez-moi d'où vient cette vanille. » ; « Je travaille avec des gens, pas avec des catalogues. »
+
+Critères de décision : 1. la naturalité et l'origine des ingrédients ; 2. l'image artisanale ; 3. la relation de confiance. Le prix passe après.
+
+Ce qui la convainc : une histoire d'origine racontée avec des preuves (certificat, producteurs de Madagascar), une visite en personne, des échantillons qu'elle goûte elle-même.
+
+Ce qui l'agace : les visios, les retards de documents (elle rappelle le certificat de vanille dès le début), le mot « chimique », la pression commerciale.
+
+Objections typiques : « Mes clients japonais veulent savoir d'où vient la vanille. » ; « Le yuzu en biscuit, vous l'avez déjà testé ? »
+
+Ce qu'elle ne dit que si on lui pose les bonnes questions : l'export au Japon représente 30 % de son chiffre d'affaires et son distributeur japonais exige le certificat d'origine avant mars 2027. Elle serait prête à commander 200 kg de yuzu par an si un test de cuisson est concluant.
+
+Sources : article de Sud Ouest pour les 60 ans de la biscuiterie (2022) ; compte Instagram de Maison Larrieu ; rencontre au salon Sirha 2026 ; fiche client interne.
+
+XII. Fiche client — BoissonSud
 
 BoissonSud est une start-up de boissons gazeuses bio basée à Toulouse, créée en 2022, avec 22 salariés. Elle vend des sodas peu sucrés en magasins bio et en cafés.
 
-Contact principal : Julien Moreau, cofondateur et directeur produit. Il répond vite par e-mail et apprécie les données chiffrées.
+Contact principal : Julien Moreau, cofondateur et directeur produit.
 
 Produits achetés : TW-310 Citron Yuzu (1,2 tonne par an). Chiffre d'affaires 2025 : 138 000 €. Remise actuelle : 3 %. Client depuis 2023. La croissance des volumes est de 40 % par an.
 
-Points sensibles : la start-up a des difficultés de trésorerie et a demandé en juin 2026 un passage du paiement à 60 jours au lieu de 30 jours. La demande est en attente de réponse du service financier.
+Points sensibles : la start-up a des difficultés de trésorerie et a demandé en juin 2026 un paiement à 60 jours au lieu de 30 jours. La demande est toujours en attente de réponse du service financier.
 
-Opportunités : BoissonSud veut lancer une boisson protéinée végétale au pois en 2027. Le TW-618 ProMask est la solution adaptée. Julien a aussi montré de l'intérêt pour un soda sans sucre ajouté (piste TW-502 SweetBalance).
+Opportunités : BoissonSud veut lancer une boisson protéinée végétale au pois en 2027 (piste TW-618 ProMask) et un soda sans sucre ajouté (piste TW-502 SweetBalance).
 
-VIII. Fiche client — Cosmétiques Océane
+XIII. Digital Twin — Julien Moreau, cofondateur, BoissonSud
+
+Identité : ancien chef de produit dans une grande marque de boissons, il a cofondé BoissonSud en 2022.
+
+Personnalité : profil DISC Dominant et Influent. Mobiles SONCAS principaux : Nouveauté et Argent. Rapide, enthousiaste, impatient.
+
+Façon de parler : il tutoie vite, utilise des anglicismes (« time to market », « scale »), demande des données. Phrases typiques : « Ok, mais concrètement ça me coûte combien par canette ? » ; « On doit être en rayon avant l'été. » ; « Envoie-moi ça par mail ce soir. »
+
+Critères de décision : 1. la rapidité ; 2. l'innovation ; 3. le prix et les conditions de paiement.
+
+Ce qui le convainc : des chiffres de coût par litre, des études de tendances, des échantillons sous 5 jours.
+
+Ce qui l'agace : la lenteur ; la demande de paiement à 60 jours sans réponse depuis juin 2026 ; les présentations trop longues.
+
+Objections typiques : « Votre service financier ne m'a toujours pas répondu. » ; « 310 € le kilo pour SweetBalance, c'est cher pour une start-up. »
+
+Ce qu'il ne dit que si on lui pose les bonnes questions : une levée de fonds de 2 millions d'euros est prévue au premier trimestre 2027, ce qui réglera sa trésorerie. Il discute aussi avec IFF pour la boisson protéinée et choisira le fournisseur qui envoie un échantillon le premier.
+
+Sources : article des Echos Start sur les jeunes marques de boissons (2026) ; offres d'emploi de BoissonSud pour cinq commerciaux publiées en octobre 2026 ; fiche client interne.
+
+XIV. Fiche client — Cosmétiques Océane
 
 Cosmétiques Océane est une marque de soins naturels basée à Biarritz, avec 48 salariés. Elle vend des crèmes visage et des produits solaires en pharmacie et en ligne.
 
-Contact principal : Laura Dufau, cheffe de projet formulation. Contact réglementaire : Nicolas Sarthou, responsable affaires réglementaires.
+Contacts : Laura Dufau, cheffe de projet formulation ; Nicolas Sarthou, responsable affaires réglementaires.
 
 Produits achetés : FB-031 Fleur d'Oranger Pure (420 kg par an) et FB-112 Ambre Solaire Bio (280 kg par an). Chiffre d'affaires 2025 : 156 800 €. Remise actuelle : 3 %. Client depuis 2020.
 
-Points sensibles : Nicolas Sarthou a demandé les fiches de données de sécurité mises à jour selon le 51e amendement IFRA. Elles ont été envoyées le 2 octobre 2026. Le client s'inquiète aussi de la coumarine présente dans FB-112, car il veut un label « sans allergène » sur sa nouvelle gamme.
+Points sensibles : Nicolas Sarthou a demandé les fiches de données de sécurité mises à jour selon le 51e amendement IFRA ; elles ont été envoyées le 2 octobre 2026. Le client s'inquiète de la coumarine présente dans FB-112, car il veut un label « sans allergène » sur sa nouvelle gamme.
 
-Opportunités : lancement d'une gamme bébé en 2027. FB-089 Linge Frais Hypoallergénique n'est pas adapté aux soins de la peau ; il faudra proposer un développement sur mesure.
+Opportunités : lancement d'une gamme bébé en 2027. FB-089 n'est pas adapté aux soins de la peau ; il faudra proposer un développement sur mesure.
 
-IX. Fiche client — Les Conserveries Basques
+XV. Digital Twin — Nicolas Sarthou, affaires réglementaires, Cosmétiques Océane
 
-Les Conserveries Basques sont une entreprise de plats cuisinés et de conserves basée à Saint-Jean-de-Luz, avec 210 salariés. Elles produisent des plats traditionnels (axoa, piperade, thon à la basquaise).
+Identité : pharmacien de formation, responsable des affaires réglementaires depuis 2021.
 
-Contact principal : Peio Harriet, directeur industriel. Il est arrivé en août 2026 en remplacement de Bernard Lacoste, parti à la retraite.
+Personnalité : profil DISC Consciencieux. Mobile SONCAS principal : Sécurité. Méfiant, rigoureux, il vérifie chaque affirmation.
 
-Produits achetés : aucun arôme du catalogue standard actuellement. Le client achetait un arôme fumé sur mesure jusqu'en 2025, puis a arrêté pour passer chez un concurrent moins cher. Chiffre d'affaires 2025 : 0 €. Chiffre d'affaires 2024 : 61 000 €.
+Façon de parler : très formel, il cite les textes réglementaires et demande les documents par écrit. Phrases typiques : « Sur quel document vous basez-vous ? » ; « Ce n'est pas une réponse, c'est une intention. » ; « Je ne valide rien sans fiche de données de sécurité. »
 
-Points sensibles : l'ancien contact Bernard Lacoste était très proche de Givaudan ; le nouveau directeur ne connaît pas encore l'entreprise.
+Critères de décision : 1. la conformité réglementaire ; 2. la liste des allergènes ; 3. la traçabilité.
+
+Ce qui le convainc : des documents officiels, une réponse exacte même si elle est « non », un engagement de délai.
+
+Ce qui l'agace : qu'on affirme qu'un produit est « sans allergène » sans preuve ; les réponses commerciales à une question technique.
+
+Objections typiques : « FB-112 contient de la coumarine, c'est incompatible avec notre label. » ; « Votre composition bébé, elle sera prête quand ? »
+
+Ce qu'il ne dit que si on lui pose les bonnes questions : la gamme bébé doit passer en comité réglementaire en avril 2027 ; sans échantillon conforme avant fin janvier 2027, le projet partira chez un autre fournisseur.
+
+Sources : fiche client interne ; échanges de mails d'octobre 2026 ; page « Engagements » du site de Cosmétiques Océane.
+
+XVI. Fiche client perdu — Les Conserveries Basques
+
+Les Conserveries Basques sont une entreprise de plats cuisinés et de conserves basée à Saint-Jean-de-Luz, avec 210 salariés. Elles produisent des plats traditionnels (axoa, piperade, thon à la basquaise). Les conserves sont stérilisées à 121 °C.
+
+Contact principal : Peio Harriet, directeur industriel, arrivé en août 2026 en remplacement de Bernard Lacoste, parti à la retraite.
+
+Historique : le client achetait un arôme fumé sur mesure jusqu'en 2025, puis est passé chez un concurrent moins cher. Chiffre d'affaires 2025 : 0 €. Chiffre d'affaires 2024 : 61 000 €.
 
 Opportunités : reconquête du client. Peio Harriet veut développer une gamme de plats végétariens en 2027, où TW-618 ProMask pourrait masquer le goût des protéines de pois.
 
-X. Fiche client — Savonnerie de l'Adour
+XVII. Digital Twin — Peio Harriet, directeur industriel, Conserveries Basques
+
+Identité : ingénieur, quinze ans dans l'industrie de la conserve, arrivé en août 2026.
+
+Personnalité : profil DISC Stable et Consciencieux. Mobiles SONCAS principaux : Sécurité et Confort. Réservé au début, il parle peu et observe.
+
+Façon de parler : prudent, il pose des questions sur l'industrialisation et les processus. Phrases typiques : « Comment ça se passe concrètement sur la ligne ? » ; « Je viens d'arriver, je ne change rien sans être sûr. » ; « Pourquoi on vous a quittés, à votre avis ? »
+
+Critères de décision : 1. la facilité d'industrialisation ; 2. la régularité entre les lots ; 3. le coût.
+
+Ce qui le convainc : des références dans les plats cuisinés, un accompagnement d'un technicien sur sa ligne, un test à petite échelle.
+
+Ce qui l'agace : qu'on parle de son prédécesseur Bernard Lacoste comme d'un ami ; qu'on critique le choix du fournisseur actuel.
+
+Objections typiques : « Pourquoi revenir chez vous alors qu'on vous a quittés pour le prix ? » ; « Votre ProMask tient-il à la stérilisation ? »
+
+Ce qu'il ne dit que si on lui pose les bonnes questions : il n'est pas satisfait du fournisseur actuel d'arôme fumé, avec deux lots non conformes en 2026. Il a un budget pour un test sur la gamme végétarienne au premier semestre 2027.
+
+Sources : annonce de sa nomination dans Sud Ouest Éco (août 2026) ; offre d'emploi des Conserveries pour un « chef de projet gamme végétale » (octobre 2026) ; historique client interne.
+
+XVIII. Fiche client — Savonnerie de l'Adour
 
 La Savonnerie de l'Adour est un fabricant de savons, gels douche et lessives écologiques basé à Dax, avec 35 salariés.
 
-Contact principal : Mathilde Garat, gérante. Elle demande toujours trois devis avant de choisir un fournisseur.
+Contact principal : Mathilde Garat, gérante.
 
 Produits achetés : FB-047 Bois de Santal Doux (800 kg par an) et FB-089 Linge Frais Hypoallergénique (1,1 tonne par an). Chiffre d'affaires 2025 : 228 800 €. Remise actuelle : 5 %. Client depuis 2018.
 
-Points sensibles : en juillet 2026, un lot de FB-047 a présenté une légère différence de couleur. Le contrôle qualité a confirmé que le produit restait conforme, mais la cliente a demandé un certificat d'analyse pour chaque lot à l'avenir.
+Points sensibles : en juillet 2026, un lot de FB-047 a présenté une légère différence de couleur. Le contrôle qualité a confirmé que le produit restait conforme, mais la cliente demande désormais un certificat d'analyse pour chaque lot.
 
 Opportunités : la cliente souhaite un contrat de deux ans pour sécuriser ses prix face à l'inflation des matières premières. Un contrat de deux ans ouvre droit à une remise de 6 à 8 %.
 
-XI. Customer profile — Atlantic Drinks Ltd (English-speaking client)
+XIX. Digital Twin — Mathilde Garat, gérante, Savonnerie de l'Adour
+
+Identité : fondatrice de la savonnerie en 2012, très engagée dans l'écologie.
+
+Personnalité : profil DISC Consciencieux. Mobiles SONCAS principaux : Argent et Sécurité. Méthodique, elle compare tout et ne se presse jamais.
+
+Façon de parler : posée, elle demande tout par écrit. Phrases typiques : « Je demande toujours trois devis. » ; « Vous pouvez me l'envoyer par écrit ? » ; « Que se passe-t-il si un lot change encore de couleur ? »
+
+Critères de décision : 1. la stabilité des prix ; 2. la traçabilité, avec un certificat d'analyse par lot ; 3. l'engagement écologique du fournisseur.
+
+Ce qui la convainc : un contrat de deux ans à prix bloqué, des certificats systématiques, une offre écrite claire.
+
+Ce qui l'agace : les réponses floues ; qu'on minimise l'incident de couleur de juillet.
+
+Objections typiques : « J'ai deux autres devis moins chers. » ; « Pourquoi je resterais chez vous ? »
+
+Ce qu'elle ne dit que si on lui pose les bonnes questions : les deux autres devis sont 4 % et 6 % moins chers. Elle préfère rester chez Givaudan si elle obtient une remise de 7 % sur deux ans et un certificat d'analyse pour chaque lot.
+
+Sources : fiche client interne ; rapport RSE 2025 de la savonnerie ; avis clients sur sa boutique en ligne, qui félicitent l'odeur du gel douche au santal.
+
+XX. Customer profile — Atlantic Drinks Ltd (English-speaking client)
 
 Atlantic Drinks Ltd is an Irish beverage company based in Cork, with a French production site in Bayonne. It produces flavoured waters and iced teas for the UK and Irish markets.
 
@@ -128,43 +286,91 @@ Sensitive points: Sean asked in September 2026 whether our flavours comply with 
 
 Opportunities: Atlantic Drinks plans a "zero sugar" iced tea range for summer 2027. TW-502 SweetBalance is a strong fit.
 
-XII. Fiche prospect — Brasserie du Béarn (pas encore cliente)
+XXI. Digital Twin — Sean O'Brien, Head of Procurement, Atlantic Drinks
 
-La Brasserie du Béarn est une brasserie artisanale basée à Lescar, près de Pau, créée en 2016, avec 30 salariés. Elle produit des bières et des limonades artisanales vendues dans les cafés et restaurants du Sud-Ouest et dans quelques supermarchés régionaux. Elle n'a jamais acheté chez Givaudan et son fournisseur d'arômes actuel n'est pas connu.
+Identity: procurement manager for 12 years, joined Atlantic Drinks in 2020.
+
+Personality: DISC profile Conscientious and Dominant. Main SONCAS motives: Security and Money. Formal, concise, demanding.
+
+Way of speaking: English only, short and polite sentences, always asks for a written follow-up. Typical phrases: "Could you put that in writing?" ; "I still haven't received an answer on UK labelling." ; "What's the total cost per litre?"
+
+Decision criteria: 1. regulatory compliance in the UK and Ireland ; 2. price ; 3. reliability of delivery.
+
+What convinces him: precise documents, clear deadlines, cost per litre comparisons.
+
+What annoys him: unanswered questions, documents sent in French.
+
+Typical objections: "Why should I wait for your regulatory team?" ; "IFF already offered a zero sugar solution."
+
+What he only reveals if asked the right questions: the tender for the zero sugar range closes on 31 January 2027, and IFF is the other supplier on the shortlist.
+
+Sources: internal customer file ; Irish Times article on the extension of the sugar tax (2026) ; news page of the Atlantic Drinks website.
+
+XXII. Fiche prospect — Brasserie du Béarn (pas encore cliente)
+
+La Brasserie du Béarn est une brasserie artisanale basée à Lescar, près de Pau, créée en 2016, avec 30 salariés. Elle produit des bières et des limonades artisanales vendues dans les cafés et restaurants du Sud-Ouest. Elle n'a jamais acheté chez Givaudan.
 
 Contact identifié : Antoine Casaubon, responsable production, rencontré par Camille Arnaud au salon agroalimentaire de Pau en septembre 2026. Aucun rendez-vous n'a encore eu lieu.
 
-Besoins probables : Antoine a expliqué au salon qu'il veut lancer en 2027 une limonade aux agrumes moins sucrée et une bière sans alcool, dont le goût reste aujourd'hui trop « plat ». Volume estimé : 300 à 500 kg d'arômes par an.
+Besoins probables : une limonade aux agrumes moins sucrée et une bière sans alcool au goût moins « plat », à lancer en 2027. Volume estimé : 300 à 500 kg d'arômes par an.
 
-Pistes de solutions : TW-310 Citron Yuzu pour la limonade, car il est conçu pour les boissons gazeuses ; TW-502 SweetBalance pour réduire le sucre. Aucun produit du catalogue n'est conçu pour améliorer le goût d'une bière sans alcool : il faudrait un développement sur mesure.
+Pistes de solutions : TW-310 Citron Yuzu pour la limonade ; TW-502 SweetBalance pour réduire le sucre ; un développement sur mesure pour la bière sans alcool.
 
-Prochaine étape : obtenir un premier rendez-vous de découverte avant la fin 2026.
+XXIII. Digital Twin — Antoine Casaubon, responsable production, Brasserie du Béarn
 
-XIII. Fiche prospect — Miellerie des Landes (pas encore cliente)
+Identité : brasseur passionné, il a rejoint la brasserie à sa création en 2016.
 
-La Miellerie des Landes est un producteur de miel et de pains d'épices basé à Mont-de-Marsan, avec 18 salariés. Elle vend en épiceries fines, sur les marchés et en ligne. Elle n'a jamais acheté chez Givaudan.
+Personnalité : profil DISC Influent et Stable. Mobiles SONCAS principaux : Nouveauté et Sympathie. Curieux et sympathique, mais méfiant envers les grands groupes.
 
-Contact identifié : Claire Lafitte, fondatrice et gérante. Elle a rempli un formulaire de contact sur le site de Givaudan en octobre 2026.
+Façon de parler : décontracté, il parle de goût, de houblon et de ses clients cafetiers. Phrases typiques : « Nous, on est des artisans, pas une usine. » ; « Vous allez vraiment vous intéresser à un petit brasseur ? » ; « Je veux goûter avant de parler prix. »
 
-Besoins probables : la miellerie veut lancer une gamme de boissons au miel et de pains d'épices aromatisés. Claire exige des ingrédients 100 % naturels et, si possible, certifiés bio. Volume estimé : environ 80 kg d'arômes par an, au-dessus de la commande minimum de 25 kg par référence.
+Critères de décision : 1. le goût ; 2. la possibilité de commander de petites quantités ; 3. l'accompagnement technique.
 
-Pistes de solutions : TW-104 Vanille Bourbon Naturelle pour les pains d'épices, car elle est stable à la cuisson jusqu'à 180 °C. Attention : aucun arôme alimentaire du catalogue n'est certifié bio ; seul FB-112, une composition cosmétique, est certifié COSMOS. Il ne faut pas promettre un arôme bio sans vérification.
+Ce qui le convainc : des échantillons à goûter, un développement fait avec lui, une relation directe avec un technicien.
 
-Prochaine étape : rappeler Claire Lafitte pour qualifier le projet et envoyer des échantillons de vanille.
+Ce qui l'agace : les discours de multinationale, la pression sur les volumes.
 
-XIV. Fiche prospect — Laboratoire Sources de Cambo (pas encore client)
+Objections typiques : « 25 kg minimum par référence, c'est beaucoup pour un test. » ; « Mon fournisseur actuel est un petit distributeur, il est réactif. »
 
-Le Laboratoire Sources de Cambo est une marque de cosmétiques à base d'eau thermale, basée à Cambo-les-Bains, avec 55 salariés. Elle vend des soins pour peaux sensibles en pharmacie, en France et en Espagne. Elle n'a jamais acheté chez Givaudan ; elle travaille aujourd'hui avec dsm-firmenich.
+Ce qu'il ne dit que si on lui pose les bonnes questions : son fournisseur actuel est un distributeur de Toulouse qui n'a aucune solution pour la bière sans alcool. Son budget est serré en 2026 mais il obtient une aide régionale à l'innovation en 2027.
 
-Contact identifié : Isabelle Etcheverry, directrice R&D. Elle a été recommandée par Laura Dufau, de Cosmétiques Océane.
+Sources : rencontre au salon agroalimentaire de Pau (septembre 2026) ; page Facebook de la brasserie ; article de La République des Pyrénées sur les bières sans alcool béarnaises (2026).
 
-Besoins probables : le laboratoire prépare pour 2027 une gamme de crèmes pour peaux atopiques. Il cherche un parfum très léger, sans allergène à déclarer, ou une gamme sans parfum.
+XXIV. Fiche prospect — Miellerie des Landes (pas encore cliente)
 
-Pistes de solutions : aucune composition du catalogue ne convient directement. FB-031 contient du linalol et du limonène, et FB-089 est réservée aux lessives. Il faut proposer un développement sur mesure, avec un échantillon sous 3 semaines.
+La Miellerie des Landes est un producteur de miel et de pains d'épices basé à Mont-de-Marsan, avec 18 salariés. Elle n'a jamais acheté chez Givaudan.
 
-Prochaine étape : rendez-vous de découverte à organiser, en s'appuyant sur la recommandation de Cosmétiques Océane.
+Contact identifié : Claire Lafitte, fondatrice et gérante, qui a rempli un formulaire de contact sur le site de Givaudan en octobre 2026.
 
-XV. Tendances du marché 2026-2027
+Besoins probables : une gamme de boissons au miel et de pains d'épices aromatisés, avec des ingrédients 100 % naturels et si possible bio. Volume estimé : environ 80 kg d'arômes par an.
+
+Pistes de solutions : TW-104 Vanille Bourbon Naturelle pour les pains d'épices, car elle est stable jusqu'à 180 °C. Aucun arôme alimentaire du catalogue n'est certifié bio : il ne faut pas en promettre.
+
+XXV. Fiche prospect — Laboratoire Sources de Cambo (pas encore client)
+
+Le Laboratoire Sources de Cambo est une marque de cosmétiques à base d'eau thermale, basée à Cambo-les-Bains, avec 55 salariés, vendue en pharmacie en France et en Espagne. Il travaille aujourd'hui avec dsm-firmenich.
+
+Contact identifié : Isabelle Etcheverry, directrice R&D, recommandée par Laura Dufau de Cosmétiques Océane.
+
+Besoins probables : une gamme de crèmes pour peaux atopiques en 2027, avec un parfum très léger sans allergène à déclarer, ou sans parfum.
+
+Pistes de solutions : aucune composition du catalogue ne convient directement, car FB-031 contient du linalol et du limonène, et FB-089 est réservée aux lessives. Il faut proposer un développement sur mesure, avec un échantillon sous 3 semaines.
+
+XXVI. Veille — signaux récents par client et prospect
+
+Laiterie des Pyrénées : offre d'emploi « technicien R&D formulation allégée » (septembre 2026), signe que le projet moins sucré avance.
+
+BoissonSud : recrutement de cinq commerciaux (octobre 2026), signe de croissance rapide.
+
+Conserveries Basques : offre d'emploi « chef de projet gamme végétale » (octobre 2026), qui confirme le projet de plats végétariens.
+
+Atlantic Drinks : extension de la taxe sur les boissons sucrées en Irlande annoncée en 2026, qui pousse vers le zéro sucre.
+
+Brasserie du Béarn : article de presse sur la hausse des bières sans alcool en Béarn (2026).
+
+Maison Larrieu : publication Instagram d'octobre 2026 annonçant « une surprise aux agrumes pour Noël 2027 ».
+
+XXVII. Tendances du marché 2026-2027
 
 Réduction du sucre : la pression du Nutri-Score et des taxes sur les boissons sucrées pousse les industriels à réduire le sucre de 20 à 30 %. Les modulateurs de goût comme SweetBalance sont la réponse principale.
 
@@ -176,7 +382,7 @@ Cosmétique : la demande de produits « sans allergène » et adaptés aux peaux
 
 Boissons sans alcool : les bières et apéritifs sans alcool progressent fortement chez les brasseurs artisanaux, qui cherchent à retrouver un goût plus riche.
 
-XVI. Concurrence et réponses aux objections
+XXVIII. Concurrence et réponses aux objections
 
 Concurrents principaux : Symrise, IFF et dsm-firmenich. Symrise est souvent moins cher sur les arômes fruités ; IFF est fort en boissons ; dsm-firmenich est fort en parfumerie fine.
 
@@ -184,12 +390,26 @@ Objection « Votre concurrent est moins cher » : rappeler le coût total, c'est
 
 Objection « Les délais sont trop longs » : proposer un stock de sécurité réservé au client, possible à partir de 1 tonne par an, ou un contrat avec livraison programmée.
 
-Objection « Nous voulons du 100 % naturel » : présenter les produits certifiés naturels et fournir les certificats d'origine. Ne jamais affirmer qu'un produit est naturel sans vérifier sa fiche technique.
+Objection « Nous voulons du 100 % naturel » : présenter les produits certifiés naturels et fournir les certificats d'origine. Ne jamais affirmer qu'un produit est naturel ou bio sans vérifier sa fiche technique.
 
-XVII. Procédure de préparation d'un rendez-vous client
+XXIX. Procédure de préparation d'un rendez-vous client
 
-Avant chaque rendez-vous, le commercial doit : relire la fiche client et le dernier compte rendu de visite ; vérifier les réclamations ouvertes et les demandes en attente ; préparer au maximum deux nouveaux produits à présenter, liés aux projets du client ; emporter des échantillons si possible ; vérifier le niveau de remise autorisé.
+Avant chaque rendez-vous, le commercial doit : relire la fiche client, le Digital Twin du contact et le dernier compte rendu de visite ; vérifier les réclamations ouvertes et les demandes en attente ; préparer au maximum deux nouveaux produits à présenter, liés aux projets du client ; adapter son discours au profil DISC et aux mobiles SONCAS du contact ; emporter des échantillons si possible ; vérifier le niveau de remise autorisé.
 
-Pour un prospect, le premier rendez-vous sert à découvrir ses projets : poser des questions sur ses lancements prévus, ses volumes, son fournisseur actuel et ses exigences (naturel, bio, allergènes), puis proposer des échantillons.
+Pour un prospect, le premier rendez-vous sert à découvrir ses projets avec la méthode SPIN : lancements prévus, volumes, fournisseur actuel et exigences (naturel, bio, allergènes), puis proposition d'échantillons.
 
 Après le rendez-vous, le compte rendu doit être saisi dans le CRM sous 48 heures, avec les décisions prises, les actions à mener et la date du prochain contact.
+
+XXX. Scénarios d'entraînement avec les Digital Twins
+
+Scénario 1, niveau facile — Premier rendez-vous avec Antoine Casaubon (Brasserie du Béarn). Objectif : obtenir un envoi d'échantillons. Réussite : le commercial découvre que le fournisseur actuel n'a pas de solution pour la bière sans alcool.
+
+Scénario 2, niveau moyen — Présenter SweetBalance à Hélène Bordes (Laiterie des Pyrénées). Objectif : obtenir un test en laboratoire. Réussite : le commercial découvre l'objectif de 25 % de sucre en moins et l'échéance du comité de février 2027.
+
+Scénario 3, niveau difficile — Négocier avec Marc Etchegaray après le retard de mars. Objectif : garder le client face à Symrise sans dépasser 8 % de remise. Réussite : le commercial propose un stock de sécurité et découvre que la R&D préfère la fraise Givaudan.
+
+Scénario 4, niveau difficile — Reconquérir Peio Harriet (Conserveries Basques). Objectif : obtenir un test de ProMask sur la gamme végétarienne. Réussite : le commercial ne parle pas de Bernard Lacoste comme d'un ami et découvre les lots non conformes du fournisseur actuel.
+
+Scénario 5, niveau moyen, en anglais — Rendez-vous avec Sean O'Brien (Atlantic Drinks). Objectif : rester sur la shortlist de l'appel d'offres zéro sucre. Réussite : le commercial reconnaît la question réglementaire en attente et découvre la date limite du 31 janvier 2027.
+
+Grille d'évaluation d'un entraînement : le commercial a-t-il adapté son discours au profil DISC ? A-t-il posé des questions d'implication (SPIN) ? A-t-il présenté les produits avec la méthode CAP ? A-t-il traité les objections sans contredire ? A-t-il respecté les règles commerciales (remise maximale, délais, pas de promesse non vérifiée) ? A-t-il obtenu un engagement concret pour la suite ?
