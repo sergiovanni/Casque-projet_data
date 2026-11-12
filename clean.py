@@ -1,4 +1,4 @@
-"""Vide la base vectorielle pour pouvoir recharger l'histoire.
+"""Vide la base vectorielle pour pouvoir recharger la base de connaissances.
 
 Usage :
     python clean.py
@@ -9,6 +9,7 @@ import rag
 
 
 def main() -> None:
+    rag.use_utf8_console()
     client = rag.get_chroma_client()
     existing = [c.name for c in client.list_collections()]
     if config.COLLECTION_NAME not in existing:

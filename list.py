@@ -14,6 +14,7 @@ PREVIEW_CHARS = 120
 
 
 def main() -> None:
+    rag.use_utf8_console()
     parser = argparse.ArgumentParser(description="Liste les morceaux stockés dans la base.")
     parser.add_argument("--full", action="store_true", help="affiche le texte complet de chaque morceau")
     args = parser.parse_args()
@@ -35,7 +36,7 @@ def main() -> None:
     for id_, doc, meta in rows:
         if meta.get("chapter") != current_chapter:
             current_chapter = meta.get("chapter")
-            print(f"\n=== {current_chapter} ===")
+            print(f"\n=== {current_chapter}  [type : {meta.get('kind', '?')}] ===")
         if args.full:
             print(f"\n[{id_}] ({len(doc)} caractères)\n{doc}")
         else:
