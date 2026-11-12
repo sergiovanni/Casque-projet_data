@@ -6,38 +6,33 @@
 <title>Assistant commercial · Givaudan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
 <style>
-  /* ---------- Réglages à adapter ---------- */
-  /* Voir aussi la config JavaScript en bas du fichier */
-
   :root {
-    --paper: #EFECF4;
-    --surface: #FFFFFF;
-    --ink: #271D36;
-    --ink-soft: #6A6178;
-    --iris: #6B4FA0;
-    --iris-pale: #E4DDF0;
-    --vetiver: #5F7350;
-    --line: #DAD4E3;
-    --danger: #A3324A;
-    --bloom-a: rgba(107, 79, 160, 0.22);
-    --bloom-b: rgba(95, 115, 80, 0.16);
+    --rose: #E5175B;          /* couleur principale de la maquette */
+    --rose-dark: #C10F4B;
+    --rose-pale: #FDE7EF;
+    --on-rose: #FFFFFF;
+    --bg: #FFFFFF;
+    --bg-soft: #F6F5F7;
+    --ink: #1C1A1F;
+    --ink-soft: #6E6873;
+    --line: #E6E2E8;
+    --danger: #B4233F;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #1A1522;
-      --surface: #241D2F;
-      --ink: #EEE9F5;
-      --ink-soft: #A79DB6;
-      --iris: #B39BE0;
-      --iris-pale: #352A47;
-      --vetiver: #A6B894;
-      --line: #3A3148;
-      --danger: #E58A9C;
-      --bloom-a: rgba(179, 155, 224, 0.18);
-      --bloom-b: rgba(166, 184, 148, 0.10);
+      --rose: #E5175B;
+      --rose-dark: #FF4F86;
+      --rose-pale: #3A1726;
+      --on-rose: #FFFFFF;
+      --bg: #17141A;
+      --bg-soft: #221E26;
+      --ink: #F2EEF4;
+      --ink-soft: #A69FAC;
+      --line: #36303B;
+      --danger: #FF8FA6;
       color-scheme: dark;
     }
   }
@@ -45,79 +40,80 @@
   * { box-sizing: border-box; }
   html, body { height: 100%; margin: 0; }
   body {
-    background: var(--paper);
+    background: var(--bg);
     color: var(--ink);
-    font: 400 16px/1.6 "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font: 400 16px/1.6 "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     display: grid;
-    grid-template-columns: 248px 1fr;
+    grid-template-columns: 240px 1fr;
     padding-top: env(safe-area-inset-top, 0px);
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
-  /* ---------- Barre latérale ---------- */
+  /* ---------- Barre latérale rose ---------- */
   aside {
-    border-right: 1px solid var(--line);
-    padding: 28px 20px;
+    background: var(--rose);
+    color: var(--on-rose);
+    padding: 24px 18px;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 24px;
   }
   .brand {
-    font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: 1.6rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    line-height: 1.1;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.12em;
   }
   .brand small {
     display: block;
-    font-family: "Figtree", system-ui, sans-serif;
     font-size: 0.8rem;
     font-weight: 500;
-    color: var(--ink-soft);
-    margin-top: 4px;
+    letter-spacing: 0;
+    opacity: .85;
   }
   .new-chat {
     font: inherit;
-    font-weight: 500;
-    color: var(--ink);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 10px 14px;
+    font-weight: 600;
+    color: var(--rose);
+    background: #FFFFFF;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 16px;
     text-align: left;
     cursor: pointer;
   }
-  .new-chat:hover { border-color: var(--iris); }
-  .history-title { font-size: 0.85rem; color: var(--ink-soft); margin: 0 0 8px; }
+  .new-chat:hover { background: var(--rose-pale); }
+  .history-title { font-size: 0.85rem; font-weight: 600; opacity: .85; margin: 0 0 8px; }
   .history { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
   .history li {
     font-size: 0.9rem;
-    padding: 6px 8px;
-    border-radius: 6px;
+    padding: 7px 10px;
+    border-radius: 8px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: var(--ink-soft);
   }
-  .history .empty { font-style: italic; }
+  .history li:first-child:not(.empty) { background: rgba(255,255,255,.18); }
+  .history .empty { opacity: .75; font-style: italic; }
   .user-card {
     margin-top: auto;
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 0.9rem;
+    background: rgba(255,255,255,.14);
+    border-radius: 12px;
+    padding: 10px 12px;
   }
   .avatar {
     width: 34px; height: 34px;
     border-radius: 50%;
-    background: var(--iris);
-    color: var(--paper);
+    background: #FFFFFF;
+    color: var(--rose);
     display: grid;
     place-items: center;
-    font-weight: 600;
+    font-weight: 700;
   }
-  .user-card span { color: var(--ink-soft); display: block; font-size: 0.8rem; }
+  .user-card span { display: block; font-size: 0.8rem; opacity: .85; }
 
   /* ---------- Zone principale ---------- */
   main {
@@ -125,88 +121,92 @@
     flex-direction: column;
     height: 100%;
     min-height: 0;
-    position: relative;
     overflow: hidden;
   }
-  .scroll {
-    flex: 1;
-    overflow-y: auto;
-    padding: 40px 24px 24px;
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 28px;
+    border-bottom: 1px solid var(--line);
   }
-  .column { max-width: 720px; margin: 0 auto; }
+  .topbar h2 { margin: 0; font-size: 1rem; font-weight: 600; }
+  .topbar button {
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+  .topbar button:hover { border-color: var(--rose); color: var(--rose); }
 
-  /* Accueil : le seul moment animé de la page */
+  .scroll { flex: 1; overflow-y: auto; padding: 32px 24px 24px; }
+  .column { max-width: 760px; margin: 0 auto; }
+
+  /* Accueil */
   .welcome {
-    min-height: 58vh;
+    min-height: 55vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: relative;
+    align-items: center;
+    text-align: center;
   }
-  .bloom {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(40% 50% at 30% 45%, var(--bloom-a), transparent 70%),
-      radial-gradient(35% 45% at 68% 60%, var(--bloom-b), transparent 70%);
-    filter: blur(20px);
-    animation: diffuse 2.4s ease-out both;
-  }
-  @keyframes diffuse {
-    from { opacity: 0; transform: scale(0.6); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-  .welcome > *:not(.bloom) { position: relative; z-index: 1; }
   .welcome h1 {
-    font-family: "Cormorant Garamond", Georgia, serif;
-    font-weight: 500;
-    font-size: clamp(2.6rem, 6vw, 4.2rem);
-    line-height: 1.05;
-    margin: 0 0 16px;
-    letter-spacing: -0.01em;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
   }
+  .welcome h1 .name { color: var(--rose); }
   .welcome p {
-    margin: 0 0 32px;
+    margin: 0 0 28px;
     color: var(--ink-soft);
-    font-size: 1.1rem;
-    max-width: 52ch;
+    max-width: 50ch;
   }
-  .suggestions { display: grid; gap: 10px; }
+  .suggestions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
   .suggestion {
     font: inherit;
-    text-align: left;
+    font-size: 0.92rem;
     color: var(--ink);
-    background: var(--surface);
+    background: var(--bg-soft);
     border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 18px;
+    border-radius: 999px;
+    padding: 9px 16px;
     cursor: pointer;
-    transition: border-color .15s;
   }
-  .suggestion:hover { border-color: var(--iris); }
+  .suggestion:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-pale); }
 
   /* Messages */
-  .messages { display: grid; gap: 28px; }
+  .messages { display: grid; gap: 26px; }
   .msg-user {
     justify-self: end;
     max-width: 80%;
-    background: var(--iris);
-    color: var(--paper);
+    background: var(--rose);
+    color: var(--on-rose);
     padding: 12px 18px;
     border-radius: 18px 18px 4px 18px;
     white-space: pre-wrap;
   }
-  .msg-bot { max-width: 100%; }
+  .msg-bot {
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 20px;
+  }
   .msg-bot .who {
-    font-family: "Cormorant Garamond", Georgia, serif;
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--iris);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--rose);
     margin-bottom: 6px;
   }
   .msg-bot .body p { margin: 0 0 12px; }
+  .msg-bot .body p:last-child { margin-bottom: 0; }
   .msg-bot .body ul { margin: 0 0 12px; padding-left: 20px; }
   .msg-bot .body strong { font-weight: 600; }
   .sources {
@@ -216,15 +216,11 @@
     font-size: 0.85rem;
     color: var(--ink-soft);
   }
-  .msg-error {
-    color: var(--danger);
-    border-left: 3px solid var(--danger);
-    padding: 4px 0 4px 14px;
-  }
-  .typing { display: flex; gap: 6px; padding: 8px 0; }
+  .msg-error { color: var(--danger); margin: 0; }
+  .typing { display: flex; gap: 6px; padding: 6px 0; }
   .typing i {
     width: 7px; height: 7px; border-radius: 50%;
-    background: var(--vetiver);
+    background: var(--rose);
     animation: pulse 1.2s infinite ease-in-out;
   }
   .typing i:nth-child(2) { animation-delay: .15s; }
@@ -232,22 +228,20 @@
   @keyframes pulse { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
 
   /* Champ de saisie */
-  .composer {
-    padding: 12px 24px 24px;
-    background: linear-gradient(to top, var(--paper) 70%, transparent);
-  }
+  .composer { padding: 12px 24px 20px; }
   .composer form {
-    max-width: 720px;
+    max-width: 760px;
     margin: 0 auto;
     display: flex;
     align-items: flex-end;
     gap: 10px;
-    background: var(--surface);
+    background: var(--bg);
     border: 1px solid var(--line);
     border-radius: 16px;
     padding: 10px 10px 10px 18px;
+    box-shadow: 0 6px 24px rgba(229, 23, 91, 0.08);
   }
-  .composer form:focus-within { border-color: var(--iris); }
+  .composer form:focus-within { border-color: var(--rose); }
   textarea {
     flex: 1;
     font: inherit;
@@ -263,34 +257,37 @@
   .send {
     font: inherit;
     font-weight: 600;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--rose);
+    color: var(--on-rose);
     border: none;
     border-radius: 10px;
-    padding: 9px 16px;
+    padding: 9px 18px;
     cursor: pointer;
   }
+  .send:hover:not(:disabled) { background: var(--rose-dark); }
   .send:disabled { opacity: .4; cursor: default; }
-  .hint { max-width: 720px; margin: 8px auto 0; font-size: 0.8rem; color: var(--ink-soft); text-align: center; }
+  .hint { max-width: 760px; margin: 8px auto 0; font-size: 0.8rem; color: var(--ink-soft); text-align: center; }
 
-  :focus-visible { outline: 2px solid var(--iris); outline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+  aside :focus-visible { outline-color: #FFFFFF; }
 
   @media (max-width: 760px) {
     body { grid-template-columns: 1fr; }
     aside { display: none; }
+    .topbar { padding: 12px 16px; }
     .scroll { padding: 24px 16px 16px; }
     .composer { padding: 10px 12px 16px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .bloom, .typing i { animation: none; }
+    .typing i { animation: none; }
   }
 </style>
 </head>
 <body>
 
 <aside>
-  <div class="brand">Givaudan<small>Assistant commercial</small></div>
-  <button class="new-chat" type="button" id="newChat">Nouvelle conversation</button>
+  <div class="brand">GIVAUDAN<small>Assistant commercial</small></div>
+  <button class="new-chat" type="button" id="newChat">+ Nouveau chat</button>
   <div>
     <p class="history-title">Questions de cette session</p>
     <ul class="history" id="history"><li class="empty">Aucune question pour l’instant</li></ul>
@@ -302,16 +299,20 @@
 </aside>
 
 <main>
+  <div class="topbar">
+    <h2>Nouveau chat</h2>
+    <button type="button" id="newChatTop">Nouveau chat</button>
+  </div>
+
   <div class="scroll" id="scroll">
     <div class="column">
       <section class="welcome" id="welcome">
-        <div class="bloom" aria-hidden="true"></div>
-        <h1 id="greeting">Bonjour Jordan</h1>
+        <h1>Hello <span class="name" id="greetName">Jordan</span> !</h1>
         <p>Dites-moi quel type de marque vous cherchez. Je vous explique pourquoi elle pourrait avoir besoin de Givaudan, et comment l’aborder.</p>
         <div class="suggestions">
           <button class="suggestion" type="button">Trouve-moi des marques de cosmétiques françaises qui préparent de nouveaux parfums</button>
-          <button class="suggestion" type="button">Quelles marques de soins naturels lancent de nouvelles gammes en ce moment ?</button>
-          <button class="suggestion" type="button">Aide-moi à préparer un premier rendez-vous avec une marque de cosmétiques bio</button>
+          <button class="suggestion" type="button">Quelles marques de soins naturels lancent de nouvelles gammes ?</button>
+          <button class="suggestion" type="button">Aide-moi à préparer un rendez-vous avec une marque bio</button>
         </div>
       </section>
       <div class="messages" id="messages" aria-live="polite"></div>
@@ -328,13 +329,9 @@
 </main>
 
 <script>
-  /* ================= CONFIG À ADAPTER =================
-     Vérifie ces deux réglages dans http://127.0.0.1:8000/docs
-     (route POST /ask → "Request body") */
+  /* ================= CONFIG À ADAPTER ================= */
   const CONFIG = {
-    // Même serveur que api.py ; si tu ouvres le fichier en double-cliquant, on vise uvicorn en local
     apiUrl: location.protocol.startsWith("http") ? "/ask" : "http://127.0.0.1:8000/ask",
-    // Nom du champ attendu par l'API dans le corps de la requête
     questionField: "question",
     userName: "Jordan",
   };
@@ -344,11 +341,10 @@
   const form = $("form"), input = $("input"), send = $("send");
   const messages = $("messages"), welcome = $("welcome"), scroll = $("scroll"), history = $("history");
 
-  $("greeting").textContent = `Bonjour ${CONFIG.userName}`;
+  $("greetName").textContent = CONFIG.userName;
   $("userName").textContent = CONFIG.userName;
   $("avatar").textContent = CONFIG.userName.charAt(0).toUpperCase();
 
-  // Échappe le HTML, puis applique un markdown très simple (gras, listes, paragraphes)
   function format(text) {
     const esc = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     return esc.split(/\n{2,}/).map(block => {
@@ -360,7 +356,6 @@
     }).join("").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   }
 
-  // Lit la réponse quel que soit le nom du champ renvoyé par api.py
   function extractAnswer(data) {
     if (typeof data === "string") return data;
     return data.answer ?? data.response ?? data.reponse ?? data.réponse ?? data.result ?? data.output
@@ -377,7 +372,7 @@
   function addBot() {
     const el = document.createElement("div");
     el.className = "msg-bot";
-    el.innerHTML = '<div class="who">Assistant</div><div class="body"><div class="typing"><i></i><i></i><i></i></div></div>';
+    el.innerHTML = '<div class="who">Assistant Givaudan</div><div class="body"><div class="typing"><i></i><i></i><i></i></div></div>';
     messages.appendChild(el);
     return el.querySelector(".body");
   }
@@ -409,6 +404,9 @@
       });
       if (res.status === 422) {
         throw new Error(`L’API refuse le format de la question. Ouvre /docs et vérifie le nom du champ attendu, puis change "questionField" dans la config du fichier.`);
+      }
+      if (res.status === 502) {
+        throw new Error("L’API n’arrive pas à joindre le modèle d’IA. Vérifie qu’Ollama est lancé et que le modèle de config.py est installé (ollama list).");
       }
       if (!res.ok) throw new Error(`L’API a répondu avec une erreur ${res.status}. Regarde le terminal où tourne uvicorn pour voir le détail.`);
 
@@ -455,12 +453,13 @@
     btn.addEventListener("click", () => ask(btn.textContent.trim()))
   );
 
-  $("newChat").addEventListener("click", () => {
+  function resetChat() {
     messages.innerHTML = "";
     welcome.hidden = false;
     input.focus();
-  });
+  }
+  $("newChat").addEventListener("click", resetChat);
+  $("newChatTop").addEventListener("click", resetChat);
 </script>
 </body>
 </html>
-
