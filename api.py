@@ -28,7 +28,11 @@ app = FastAPI(
                 "puis un LLM Ollama rédige la réponse.",
     version="1.0.0",
 )
- 
+ from fastapi.responses import FileResponse
+
+@app.get("/")
+def page():
+    return FileResponse("index.html")
  
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=1, examples=["Prépare mon rendez-vous avec la Laiterie des Pyrénées."])
