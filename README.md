@@ -147,6 +147,6 @@ L'identifiant d'une entreprise est son nom sans accents, en minuscules, avec des
 | `KNOWLEDGE_PATH` | `./story.txt` |
 | `CHUNK_SIZE` / `WHOLE_SECTION_MAX` | `1000` / `3000` (caractères ; une section plus courte n'est pas découpée) |
 | `TOP_K` | `5` (passages retrouvés par similarité) |
-| `MAX_CONTEXT_CHARS` | `16000` (texte envoyé au LLM) |
+| `MAX_CONTEXT_CHARS` | `7000` (texte envoyé au LLM) |
 | `TWIN_EXCHANGES` / `ASK_HISTORY` | `8` / `6` |
 | `ALERTS_PATH` | `./alerts.json` |

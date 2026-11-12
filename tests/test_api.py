@@ -18,7 +18,7 @@ def appels_llm():
 
 @pytest.fixture
 def client(monkeypatch, tmp_path, appels_llm):
-    def faux_chat(messages, temperature=0.2, json_mode=False):
+    def faux_chat(messages, temperature=0.2, json_mode=False, max_tokens=None):
         appels_llm.append(messages)
         if json_mode:
             return json.dumps({"notes": {"disc": 4, "spin": 3, "cap": 3, "objections": 4, "regles": 5, "engagement": 4},
@@ -198,3 +198,36 @@ def test_evaluation_json_invalide(client, monkeypatch):
 def test_health(client, monkeypatch):
     monkeypatch.setattr(rag, "ollama_available", lambda: False)
     assert client.get("/health").json()["ollama"] is False
+
+
+# --- Réponses de l'Assistant ---------------------------------------------------------------
+
+def test_refus_de_tete_retire_quand_une_reponse_suit():
+    brut = "Je n'ai pas cette information dans les documents. Le TW-502 SweetBalance coûte 310 € le kilo."
+    assert api.remove_leading_refusal(brut) == "Le TW-502 SweetBalance coûte 310 € le kilo."
+
+
+def test_refus_seul_reste_intact():
+    refus = "Je n'ai pas cette information dans les documents."
+    assert api.remove_leading_refusal(refus) == refus
+    assert api.remove_leading_refusal("Le TW-502 coûte 310 € le kilo.") == "Le TW-502 coûte 310 € le kilo."
+
+
+def test_contexte_court_sans_sections_inutiles(client):
+    r = client.post("/ask", json={"question": "Quel est le prix du TW-502 ?"}).json()
+    titres = " ".join(s["chapter"] for s in r["sources"])
+    assert "Fiche produit TW-502" in titres
+    assert "Concurrence" not in titres and "Présentation du secteur" not in titres
+    assert sum(len(s["text"]) for s in r["sources"]) <= config.MAX_CONTEXT_CHARS
+
+
+def test_nom_propre_retrouve_les_paragraphes_qui_le_citent(client):
+    r = client.post("/ask", json={"question": "Quels clients pourraient acheter SweetBalance ?"}).json()
+    titres = " ".join(s["chapter"] for s in r["sources"])
+    assert "BoissonSud" in titres and "Atlantic Drinks" in titres and "Brasserie du Béarn" in titres
+
+
+def test_pitch_dans_ask_utilise_la_logique_du_pitch(client, appels_llm):
+    r = client.post("/ask", json={"question": "Prépare un pitch pour Capilla Nova"}).json()
+    assert r["sources"][0]["chapter"].startswith("Pitch")
+    assert "Capilla Nova" in appels_llm[-1][-1]["content"]

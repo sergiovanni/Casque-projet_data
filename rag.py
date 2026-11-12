@@ -73,12 +73,12 @@ def search(question: str, top_k: int, entreprise: str | None = None) -> list[dic
     ]
 
 
-def chat(messages: list[dict], temperature: float = 0.2, json_mode: bool = False) -> str:
+def chat(messages: list[dict], temperature: float = 0.2, json_mode: bool = False, max_tokens: int | None = None) -> str:
     """Appelle le LLM. Avec json_mode, Ollama force une réponse en JSON valide."""
     response = _ollama.chat(
         model=config.LLM_MODEL,
         messages=messages,
-        options={"temperature": temperature, "num_ctx": config.NUM_CTX},
+        options={"temperature": temperature, "num_ctx": config.NUM_CTX, **({"num_predict": max_tokens} if max_tokens else {})},
         format="json" if json_mode else None,
     )
     return response["message"]["content"]

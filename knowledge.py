@@ -13,6 +13,7 @@ Rien ici n'utilise l'IA : tout vient d'expressions régulières sur le texte.
 
 from __future__ import annotations
 
+import math
 import re
 import unicodedata
 from functools import lru_cache
@@ -187,6 +188,32 @@ def mentions(question: str, aliases: set[str]) -> bool:
 
 
 # ----------------------------------------------------------------------------------------
+# Recherche par mots rares dans les paragraphes (complète la recherche vectorielle)
+# ----------------------------------------------------------------------------------------
+
+# Mots trop courants pour aider à trouver un passage
+_QUESTION_STOP = {
+    "quel", "quels", "quelle", "quelles", "comment", "pourquoi", "dans", "avec", "pour", "sont", "peut", "peuvent",
+    "pourraient", "pourrait", "faut", "faire", "donne", "donner", "moi", "mon", "mes", "cite", "prepare", "preparer",
+    "puis", "plus", "moins", "tout", "tous", "tres", "cette", "cela", "ceux", "elle", "elles", "leur", "leurs",
+    "nous", "vous", "etre", "avoir", "aussi", "mais", "chez", "dont", "entre", "sans", "sous", "quoi", "alors",
+    "what", "does", "want", "should", "about", "with", "that", "this", "have", "from",
+}
+
+
+def _stem(mot: str) -> str:
+    """Racine grossière (6 premières lettres) : « acheter » et « achetés » se rejoignent."""
+    return mot[:6]
+
+
+def keyword_tokens(text: str) -> set[str]:
+    """Mots utiles d'un texte, sans accents, plus les références produits (tw-502, fb-140...)."""
+    jetons = set(re.findall(r"(?:tw|fb)-\d+e?", text.lower()))
+    jetons |= {_stem(w) for w in normalize(text).split() if len(w) >= 4 and w not in _QUESTION_STOP}
+    return jetons
+
+
+# ----------------------------------------------------------------------------------------
 # La base de connaissances
 # ----------------------------------------------------------------------------------------
 
@@ -204,6 +231,49 @@ class Knowledge:
         self.twins = self._build_twins()
         self.prospects = self._build_prospects()
         self.types_alertes, self.alertes_recommandees = self._parse_alertes()
+        self._build_paragraph_index()
+
+    # --- recherche par mots rares ----------------------------------------------------------
+
+    def _build_paragraph_index(self) -> None:
+        self._paragraphs = [
+            {"section_id": s["id"], "chapter": s["chapter"], "texte": p, "tokens": keyword_tokens(p)}
+            for s in self.sections for p in s["paragraphes"]
+        ]
+        total = len(self._paragraphs)
+        frequence: dict[str, int] = {}
+        for p in self._paragraphs:
+            for t in p["tokens"]:
+                frequence[t] = frequence.get(t, 0) + 1
+        # Un mot présent dans peu de paragraphes (« sweetbalance ») compte plus qu'un mot courant (« client »)
+        self._idf = {t: math.log(1 + total / n) ** 2 for t, n in frequence.items()}  # au carré : les mots rares dominent
+
+    def _mots_cles(self, question: str) -> set[str]:
+        """Éléments précis de la question : références produits et noms propres (mots en majuscule hors début de phrase).
+        Les mots courants (« client », « recommandé ») ne servent pas à chercher : ils sont partout dans le document."""
+        jetons = set(re.findall(r"(?:tw|fb)-\d+e?", question.lower()))
+        for mot in re.findall(r"[A-ZÉÈÀÂÎÔÙ][\w'’-]{3,}", question)[0:]:
+            if question.strip().startswith(mot):
+                continue  # le premier mot est en majuscule à cause de la phrase, pas parce que c'est un nom
+            jetons.add(_stem(normalize(mot).replace(" ", "")))
+        return {t for t in jetons if self._idf.get(t, 0) >= 9}  # assez rare dans le document pour être utile
+
+    def search_paragraphs(self, question: str, limit: int = 4, section_ids: set[str] | None = None) -> list[dict]:
+        """Les paragraphes qui parlent d'un nom propre ou d'une référence de la question (sans IA, instantané).
+        Exemple : « Quels clients pourraient acheter SweetBalance ? » -> les paragraphes qui citent SweetBalance."""
+        cles = self._mots_cles(question)
+        if not cles:
+            return []
+        trouves = []
+        for p in self._paragraphs:
+            if section_ids is not None and p["section_id"] not in section_ids:
+                continue
+            communs = cles & p["tokens"]
+            if communs:
+                score = sum(self._idf[t] for t in communs) / (len(p["tokens"]) ** 0.25)
+                trouves.append((score, p))
+        trouves.sort(key=lambda x: -x[0])
+        return [p for _, p in trouves[:limit]]
 
     # --- accès simples -------------------------------------------------------------------
 

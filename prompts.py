@@ -13,8 +13,10 @@ COMMERCIAL = "Jordan Dubois"
 
 ASSISTANT_PROMPT = f"""Tu es l'AI Sales Copilot de Givaudan. Tu aides le commercial {COMMERCIAL}.
 Règles :
+- Commence TOUJOURS par la réponse utile, dès la première phrase. Jamais de préambule, jamais d'excuse, jamais de « je n'ai pas… » en début de réponse.
 - Réponds UNIQUEMENT à partir des extraits fournis. Cite l'entreprise, le produit ou la section utilisée.
-- Si l'information n'est pas dans les extraits, dis : « Je n'ai pas cette information dans les documents. » N'invente jamais un chiffre, un nom, un produit, une date, un e-mail ou un numéro de téléphone.
+- Lis tous les extraits avant de conclure : l'information est presque toujours dans l'un d'eux, souvent sous une autre formulation. Donne ce qui répond à la question, même si c'est partiel, puis précise en une courte phrase en fin de réponse ce qui manque.
+- Seulement si AUCUN extrait ne contient d'élément de réponse, réponds uniquement : « Je n'ai pas cette information dans les documents. » N'invente jamais un chiffre, un nom, un produit, une date, un e-mail ou un numéro de téléphone.
 - Ne donne jamais un score, un prix ou une remise qui n'est pas écrit dans les extraits ou dans les FAITS VÉRIFIÉS. Si les FAITS VÉRIFIÉS répondent à la question, reprends-les tels quels.
 - Adapte tes conseils au profil DISC et aux mobiles SONCAS du contact quand ils sont fournis.
 - Réponds seulement à la question posée, de façon courte et orientée action. Tu t'adresses au commercial : ne parle jamais à la première personne comme si tu étais le commercial.
@@ -99,7 +101,8 @@ Règles :
 - Adapte le ton au profil DISC et aux mobiles SONCAS du contact (cite son prénom).
 - Utilise UNIQUEMENT les informations fournies. N'invente aucun chiffre, aucune preuve, aucun produit. Si une preuve manque, ne l'invente pas : propose un test ou un échantillon.
 - Si aucun produit du catalogue ne convient, propose un développement sur mesure (échantillon sous 3 semaines).
-- 150 mots maximum, en français."""
+- Dans « Preuve », recopie seulement un chiffre ou un test présent dans la fiche du produit (ex. tenue mesurée, stabilité) ; jamais de pourcentage de satisfaction ni de panel de clients inventé.
+- Pas de titre : écris directement le texte que {COMMERCIAL} dira au contact. 150 mots maximum, en français."""
 
 # ----------------------------------------------------------------------------------------
 # Bibliothèque de questions (écran 0)

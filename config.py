@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 LLM_MODEL = os.getenv("LLM_MODEL", "llama3.2:3b")
 EMBED_MODEL = os.getenv("EMBED_MODEL", "nomic-embed-text")
-NUM_CTX = int(os.getenv("NUM_CTX", "8192"))  # taille du contexte du LLM, en tokens
+NUM_CTX = int(os.getenv("NUM_CTX", "4096"))  # taille du contexte du LLM, en tokens
 
 # Base vectorielle (ChromaDB persistante sur disque)
 CHROMA_DIR = Path(os.getenv("CHROMA_DIR", BASE_DIR / "chroma_db"))
@@ -23,7 +23,7 @@ CHUNK_OVERLAP_PARAGRAPHS = int(os.getenv("CHUNK_OVERLAP_PARAGRAPHS", "1"))
 
 # Recherche
 TOP_K = int(os.getenv("TOP_K", "5"))
-MAX_CONTEXT_CHARS = int(os.getenv("MAX_CONTEXT_CHARS", "16000"))  # budget de texte envoyé au LLM
+MAX_CONTEXT_CHARS = int(os.getenv("MAX_CONTEXT_CHARS", "7000"))  # budget de texte envoyé au LLM
 
 # Modes Twin / Coach
 TWIN_EXCHANGES = int(os.getenv("TWIN_EXCHANGES", "8"))  # derniers échanges envoyés au LLM pendant une simulation

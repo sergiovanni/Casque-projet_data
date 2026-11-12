@@ -112,11 +112,24 @@ class EvaluateRequest(BaseModel):
 # Outils communs
 # ----------------------------------------------------------------------------------------
 
-def llm(messages: list[dict], temperature: float = 0.2, json_mode: bool = False) -> str:
+def llm(messages: list[dict], temperature: float = 0.2, json_mode: bool = False, max_tokens: int | None = None) -> str:
     try:
+        if max_tokens:
+            return rag.chat(messages, temperature, json_mode=json_mode, max_tokens=max_tokens).strip()
         return rag.chat(messages, temperature, json_mode=json_mode).strip()
     except Exception as exc:  # Ollama injoignable, modèle absent...
         raise HTTPException(502, f"Erreur Ollama : {exc}") from exc
+
+
+_REFUS_RE = re.compile(r"^\W*(?:je n['’]ai pas cette information|je ne dispose pas de cette information|"
+                       r"i don['’]t have this information)[^.\n]*[.\n]+\s*", re.IGNORECASE)
+
+
+def remove_leading_refusal(answer: str) -> str:
+    """Un petit modèle écrit parfois « Je n'ai pas cette information… » puis donne quand même la réponse.
+    On retire ce refus de tête quand une vraie réponse suit ; une réponse qui n'est QUE le refus reste intacte."""
+    reste = _REFUS_RE.sub("", answer, count=1).strip()
+    return reste if len(reste) >= 30 else answer
 
 
 def entreprise_or_404(entreprise_id: str) -> dict:
@@ -161,7 +174,20 @@ def collect_sources(question: str, entreprise_id: str | None, top_k: int) -> lis
 
     sources = [Source(chapter=s["chapter"], text=s["texte"]) for s in sections.values()]
     sources += [Source(chapter=f"Fiche produit {p['code']} {p['nom']}", text=p["texte"]) for p in k.produits_cites(question)]
-    for s in k.sections_of_sujet("secteur", "concurrence"):
+    # Paragraphes qui citent un nom propre ou une référence de la question (ex. SweetBalance) : instantané, sans IA
+    deja = {s["id"] for s in k.sections_for(question)}
+    for p in k.search_paragraphs(question, limit=5):
+        if p["section_id"] not in deja:
+            sources.append(Source(chapter=p["chapter"], text=p["texte"]))
+    # Ces deux sections ne sont ajoutées que si la question les concerne : un contexte plus court donne
+    # une réponse plus rapide et plus ciblée avec un petit modèle.
+    nq = knowledge.normalize(question)
+    sujets = []
+    if re.search(r"remise|delai|echantillon|livraison|commande|minimum|stock|contrat|rendez vous|rdv|prepare|pitch|regles", nq):
+        sujets.append("secteur")
+    if re.search(r"moins cher|concurren|symrise|iff|firmenich|objection|delais? (sont )?trop|naturel|denigr|rendez vous|rdv|prepare", nq):
+        sujets.append("concurrence")
+    for s in k.sections_of_sujet(*sujets):
         if s["id"] not in sections:
             sources.append(Source(chapter=s["chapter"], text=s["texte"]))
 
@@ -289,6 +315,13 @@ def search(req: AskRequest):
 @app.post("/ask", response_model=AskResponse, tags=["assistant"])
 def ask(req: AskRequest):
     """**Mode Assistant** : préparer un RDV, répondre en direct, piloter, prospecter. Avec `entreprise_id`, la recherche est filtrée."""
+    if re.search(r"pitch", knowledge.normalize(req.question)):
+        cible = req.entreprise_id or next((e["id"] for s in kn().sections_for(req.question) if s["entreprise"]
+                                           for e in kn().entreprises.values() if e["nom"] == s["entreprise"]), None)
+        if cible:  # « Prépare un pitch pour X » : même logique que /pitch (produits adaptés, DISC)
+            r = pitch(PitchRequest(entreprise_id=cible))
+            return AskResponse(question=req.question, answer=r["pitch"], model=config.LLM_MODEL, faits_verifies=[],
+                               sources=[Source(chapter=f"Pitch — {r['entreprise']}", text=", ".join(r["produits"]) or "sur mesure")])
     sources = collect_sources(req.question, req.entreprise_id, req.top_k)
     context, used = build_context(sources)
     faits = verified_facts(req.question)
@@ -299,7 +332,7 @@ def ask(req: AskRequest):
     messages.append({"role": "user", "content": (
         f"Extraits des documents :\n\n{context}\n\nFAITS VÉRIFIÉS (calculés par programme) :\n{texte_faits}\n\n"
         f"Question : {req.question}")})
-    answer = llm(messages, temperature=0.2)
+    answer = remove_leading_refusal(llm(messages, temperature=0.2, max_tokens=350))
     return AskResponse(question=req.question, answer=answer, model=config.LLM_MODEL, faits_verifies=faits, sources=used)
 
 
@@ -408,7 +441,7 @@ def pitch(req: PitchRequest):
             f"Produits adaptés (fiches techniques) :\n{texte_produits}\n\nÉcris le pitch.")},
     ]
     return {"entreprise": ent["nom"], "contact": contact, "produits": [p["code"] for p in produits],
-            "pitch": llm(messages, temperature=0.4), "model": config.LLM_MODEL}
+            "pitch": llm(messages, temperature=0.2, max_tokens=300), "model": config.LLM_MODEL}
 
 
 # ----------------------------------------------------------------------------------------
@@ -518,7 +551,7 @@ def twin_start(req: TwinStartRequest):
 
     profil = kn().twin_text(twin)
     system = prompts.twin_prompt(twin["nom"], twin["role"], twin["entreprise"], profil, twin["langue"])
-    ouverture = llm([{"role": "system", "content": system}, {"role": "user", "content": prompts.OUVERTURE_TWIN}], temperature=0.5)
+    ouverture = llm([{"role": "system", "content": system}, {"role": "user", "content": prompts.OUVERTURE_TWIN}], temperature=0.5, max_tokens=120)
 
     if len(SESSIONS) >= MAX_SESSIONS:
         SESSIONS.pop(next(iter(SESSIONS)))
@@ -538,7 +571,7 @@ def twin_message(req: TwinMessageRequest):
     messages = [{"role": "system", "content": session["system"]}, *historique,
                 {"role": "system", "content": prompts.twin_reminder(twin["nom"], session["profil"], twin["langue"])},
                 {"role": "user", "content": req.message}]
-    reply = llm(messages, temperature=0.4)
+    reply = llm(messages, temperature=0.4, max_tokens=150)
     session["messages"] += [{"role": "user", "content": req.message}, {"role": "assistant", "content": reply}]
     return {"session_id": req.session_id, "reply": reply, "tour": sum(m["role"] == "user" for m in session["messages"])}
 
@@ -596,7 +629,7 @@ def coach_evaluate(req: EvaluateRequest):
     resultat = None
     for temperature in (0.2, 0.0):  # un second essai si le JSON est invalide
         try:
-            resultat = parse_json(llm(messages, temperature=temperature, json_mode=True))
+            resultat = parse_json(llm(messages, temperature=temperature, json_mode=True, max_tokens=600))
             break
         except json.JSONDecodeError:
             continue
