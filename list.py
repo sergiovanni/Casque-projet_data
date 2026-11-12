@@ -36,7 +36,7 @@ def main() -> None:
     for id_, doc, meta in rows:
         if meta.get("chapter") != current_chapter:
             current_chapter = meta.get("chapter")
-            print(f"\n=== {current_chapter}  [type : {meta.get('kind', '?')}] ===")
+            print(f"\n=== {current_chapter}  [type : {meta.get('type', '?')}] ===")
         if args.full:
             print(f"\n[{id_}] ({len(doc)} caractères)\n{doc}")
         else:

@@ -1,46 +1,23 @@
-"""Charge la base de connaissances (story.txt) dans la base vectorielle.
+"""Charge story.txt dans la base vectorielle (ChromaDB).
 
 Usage :
     python ingest.py                  # charge story.txt
     python ingest.py autre_fichier.txt
 
-Chaque section du document (« I. … », « VIII. Digital Twin — … ») est indexée avec
-des métadonnées (type de section, client, Digital Twin) calculées par `kb.py`.
+Chaque section est indexée avec des métadonnées :
+- type       : client | prospect | compte_rendu | twin | produits | reference
+- entreprise : le client ou prospect concerné (permet la recherche filtrée)
+- sujet, twin, chapter, ... (voir knowledge.py)
 Les sections courtes restent d'un seul tenant, pour qu'une fiche client ou un
 Digital Twin ne soit jamais coupé en deux.
 """
 
-import re
 import sys
 from pathlib import Path
 
 import config
-import kb
+import knowledge
 import rag
-
-# Un titre de section ressemble à "IV. Le Sanctuaire Brisé" ou "Chapitre 1 : Le Grand Départ"
-CHAPTER_RE = re.compile(r"^(?:[IVXLC]+\.\s+\S|chapitre\s+\w+\b)", re.IGNORECASE)
-
-
-def split_into_sections(text: str) -> tuple[str, list[tuple[str, list[str]]]]:
-    """Retourne (titre du document, [(titre de la section, [paragraphes])])."""
-    paragraphs = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
-    title = ""
-    if paragraphs and not CHAPTER_RE.match(paragraphs[0]):
-        title = paragraphs.pop(0)
-
-    sections: list[tuple[str, list[str]]] = []
-    current_title, current = "Introduction", []
-    for p in paragraphs:
-        if CHAPTER_RE.match(p) and len(p) < 120:
-            if current:
-                sections.append((current_title, current))
-            current_title, current = p, []
-        else:
-            current.append(p)
-    if current:
-        sections.append((current_title, current))
-    return title, sections
 
 
 def chunk_paragraphs(paragraphs: list[str]) -> list[str]:
@@ -72,26 +49,29 @@ def chunk_paragraphs(paragraphs: list[str]) -> list[str]:
 def main() -> None:
     rag.use_utf8_console()
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else config.KNOWLEDGE_PATH
-    text = path.read_text(encoding="utf-8")
-    doc_title, sections = split_into_sections(text)
+    base = knowledge.Knowledge(path.read_text(encoding="utf-8"))
 
     ids, documents, metadatas = [], [], []
-    for chap_idx, (chapter, paragraphs) in enumerate(sections):
-        section_meta = kb.section_metadata(chapter)
-        for chunk_idx, chunk in enumerate(chunk_paragraphs(paragraphs)):
-            ids.append(f"{path.stem}-{chap_idx:02d}-{chunk_idx:03d}")
+    for section in base.sections:
+        for chunk_idx, chunk in enumerate(chunk_paragraphs(section["paragraphes"])):
+            ids.append(f"{path.stem}-{section['index']:02d}-{chunk_idx:03d}")
             documents.append(chunk)
             metadatas.append({
                 "source": path.name,
-                "doc_title": doc_title,
-                "chapter": chapter,
-                "chapter_index": chap_idx,
+                "doc_title": base.doc_title,
+                "section_id": section["id"],
+                "numero": section["numero"],
+                "chapter": section["chapter"],
+                "chapter_index": section["index"],
                 "chunk_index": chunk_idx,
-                **section_meta,
+                "type": section["type"],
+                "entreprise": section["entreprise"],
+                "sujet": section["sujet"],
+                "twin": section["twin"],
             })
 
-    print(f"Document : {doc_title or path.name}")
-    print(f"{len(sections)} sections, {len(documents)} morceaux à indexer")
+    print(f"Document : {base.doc_title[:100]}")
+    print(f"{len(base.sections)} sections, {len(documents)} morceaux à indexer")
     print(f"Calcul des embeddings avec '{config.EMBED_MODEL}'...")
 
     # Le titre de la section est ajouté au texte embarqué pour aider la recherche
@@ -104,10 +84,9 @@ def main() -> None:
     collection.delete(where={"source": path.name})
     collection.upsert(ids=ids, documents=documents, metadatas=metadatas, embeddings=embeddings)
 
-    twins = sorted({m["twin"] for m in metadatas if m["twin"]})
-    print(f"OK : {collection.count()} morceaux dans la collection '{config.COLLECTION_NAME}' "
-          f"({config.CHROMA_DIR})")
-    print(f"{len(twins)} Digital Twins : {', '.join(twins)}")
+    print(f"OK : {collection.count()} morceaux dans la collection '{config.COLLECTION_NAME}' ({config.CHROMA_DIR})")
+    print(f"{len(base.entreprises)} entreprises, {len(base.prospects)} prospects, "
+          f"{len(base.produits)} produits, {len(base.twins)} Digital Twins")
 
 
 if __name__ == "__main__":

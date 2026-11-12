@@ -1,188 +1,129 @@
-"""API de l'assistant commercial Givaudan (RAG + Ollama), avec trois modes :
+"""API « Givaudan AI Sales Copilot » (équipe Casque).
 
-- Assistant : le commercial pose une question, l'IA répond à partir des documents (POST /ask).
-- Twin      : l'IA joue le client, le commercial s'entraîne comme en rendez-vous (POST /twin).
-- Coach     : l'IA note le commercial à partir d'une simulation, avec la grille de la section XXX (POST /coach).
+Règle d'or : l'IA ne calcule rien et ne décide rien de chiffré.
+- les scores des prospects viennent de `scoring.py` ;
+- les remises, températures, minimums et délais viennent de `rules.py` ;
+- le LLM (Ollama) rédige seulement du texte à partir de données déjà vérifiées.
 
 Lancement :
     python api.py                 # ou : uvicorn api:app --reload
 Swagger : http://localhost:8000/docs
 """
 
+import json
+import re
+import tempfile
+import uuid
+from datetime import datetime
 from typing import Literal
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 import config
-import kb
+import knowledge
+import prompts
 import rag
-
-# --------------------------------------------------------------------------------------
-# Prompts
-# --------------------------------------------------------------------------------------
-
-ASSISTANT_PROMPT = """Tu es l'assistant commercial de Givaudan pour le secteur France Sud-Ouest (équipe Casque).
-Tu aides le commercial à préparer ses rendez-vous, à répondre à un client en direct et à piloter son secteur.
-
-Règles :
-- Réponds UNIQUEMENT à la question posée, de façon courte et directe (quelques phrases ou une courte liste). N'ajoute rien qui n'a pas été demandé.
-- Appuie-toi UNIQUEMENT sur les extraits fournis (règles commerciales, catalogue, fiches clients, Digital Twins, comptes rendus, veille).
-- Si la question sort du cadre (culture générale, autre sujet) ou si l'information n'est pas dans les extraits, réponds simplement que tu n'as pas cette information dans la base commerciale, sans rien inventer. Si les extraits donnent une information partielle (ex. « 12 % moins cher »), donne-la et précise ce qui manque.
-- N'invente jamais un chiffre, un nom, un produit, une date, une adresse e-mail ou un numéro de téléphone.
-- Cite les noms de contacts, les références produits (ex. TW-502, TW-221E) et les chiffres seulement quand ils servent la réponse.
-- Ne confonds pas ce que propose Givaudan avec ce que propose un concurrent (Symrise, IFF, dsm-firmenich).
-- Pour conseiller sur la façon de parler à quelqu'un, appuie-toi sur son profil DISC, ses mobiles SONCAS, ce qui le convainc et ce qui l'agace.
-- Utilise la structure « interlocuteurs (DISC, SONCAS), points sensibles, opportunités, produits à présenter (2 maximum), remise autorisée » SEULEMENT si on te demande explicitement de préparer un rendez-vous.
-- Pendant un rendez-vous (question courte), réponds en 2 ou 3 phrases maximum.
-- Réponds dans la langue de la question (français ou anglais)."""
-
-
-def twin_prompt(twin: dict, sheet: str, background: str) -> str:
-    return f"""Tu joues le rôle de {twin['name']}, {twin['role']} chez {twin['company']}. Un commercial de Givaudan s'entraîne à te rencontrer : parle comme dans un vrai rendez-vous.
-
-Règles du jeu :
-- Reste TOUJOURS dans ton personnage. Parle à la première personne. Ne dis jamais que tu es une IA, un jeu de rôle, une simulation ou que tu lis une fiche.
-- Respecte ta fiche : personnalité (profil DISC, mobiles SONCAS), façon de parler (vouvoiement ou tutoiement, phrases courtes ou longues, phrases typiques), ce qui te convainc, ce qui t'agace.
-- Réponds par des répliques courtes (1 à 4 phrases), uniquement les paroles prononcées : pas de didascalies, pas de listes, pas de titres, pas de guillemets autour de ta réplique.
-- Si le commercial fait quelque chose qui figure dans « Ce qui t'agace » (minimiser un problème, discours trop général ou commercial, parler de ton prédécesseur comme d'un ami, mot qui te déplaît...), réagis comme ton personnage le ferait : coupe court, te ferme ou recadre.
-- Tu as tes propres préoccupations (points sensibles, objections typiques) : si le commercial ne les aborde pas, ramène-les toi-même dans la conversation.
-- Les informations de la rubrique « Ce qu'il/elle ne dit que si on lui pose les bonnes questions » (« What he only reveals if asked the right questions » en anglais) ne sont à révéler QUE si le commercial pose une question précise qui s'y rapporte. Sinon, esquive ou reste vague. Ne les donne jamais toutes d'un coup.
-- Tu ne sais que ce qui figure dans ta fiche et dans le contexte ci-dessous. Si on te demande une information absente (ex. ton chiffre d'affaires total, ta vie privée), n'invente RIEN : dis que tu ne la communiques pas ou que tu ne sais pas, dans le style de ton personnage.
-- Si ta fiche impose une langue (ex. « English only »), réponds uniquement dans cette langue. Sinon, réponds dans la langue du commercial.
-- Si le commercial te fait une proposition (remise, délai...), réagis en client réaliste. Tu n'évalues pas sa performance : tu n'es pas un coach.
-
-=== TA FICHE ===
-{sheet}
-
-=== CONTEXTE : TA RELATION AVEC GIVAUDAN ===
-{background}"""
-
-
-def coach_prompt(twin: dict, context: str) -> str:
-    return f"""Tu es le coach commercial de Givaudan (équipe Casque). Tu évalues un commercial après une simulation de rendez-vous avec le Digital Twin de {twin['name']} ({twin['role']}, {twin['company']}).
-
-La conversation fournie est la seule chose que tu évalues. Cite des répliques exactes du commercial. N'invente aucun échange.
-
-Évalue avec cette grille de 6 critères, chacun noté sur 5 :
-1. Profil DISC : le commercial a-t-il adapté son discours au profil DISC et aux mobiles SONCAS de {twin['name']} ?
-2. Questions SPIN : a-t-il posé des questions d'implication pour découvrir les vrais enjeux ?
-3. Méthode CAP : a-t-il présenté ses produits en Caractéristique, Avantage, Preuve ?
-4. Objections : les a-t-il traitées sans contredire ni dénigrer (écouter, questionner, reformuler, prouver) ?
-5. Règles commerciales : remise maximale (au-delà de 8 %, validation de Thomas Lefèvre ; 6 à 8 % seulement avec un contrat de deux ans), délais, aucune promesse non vérifiée.
-6. Engagement : a-t-il obtenu un engagement concret pour la suite (échantillon, test, rendez-vous daté) ?
-
-Format de la réponse :
-- Commence par signaler toute faute grave (ex. remise supérieure à 8 % sans validation, promesse non vérifiée, erreur sur un produit).
-- Puis, pour chaque critère : la note /5, un point fort, un point à améliorer, et une phrase plus efficace que le commercial aurait pu dire.
-- Si un critère ne peut pas être observé dans la conversation, note-le 0/5 et dis pourquoi.
-- Termine par la note globale /30 et les 2 priorités de progression.
-Réponds en français (les phrases suggérées sont dans la langue du client).
-
-=== INFORMATIONS DE RÉFÉRENCE ===
-{context}"""
-
-
-# --------------------------------------------------------------------------------------
-# Modèles de requête / réponse
-# --------------------------------------------------------------------------------------
+import rules
+import scoring
 
 app = FastAPI(
     title="Givaudan AI Sales Copilot API",
-    description="Assistant commercial Givaudan (équipe Casque), en trois modes : "
-                "**Assistant** (/ask) pour préparer et piloter, **Twin** (/twin) pour s'entraîner face à un client simulé, "
-                "**Coach** (/coach) pour évaluer l'entraînement. Les passages utiles sont retrouvés dans la base vectorielle, "
-                "puis un LLM Ollama rédige la réponse.",
-    version="2.0.0",
+    description="Copilote du commercial Jordan Dubois : **Assistant** (/ask, /pitch), **prospection** (/prospects), "
+                "**Digital Twin** pour s'entraîner (/twin/start, /twin/message) et **Coach** (/coach/evaluate). "
+                "Les chiffres (scores, remises, températures) sont vérifiés par du code Python, pas par le LLM.",
+    version="3.0.0",
 )
+
+# Le front tourne sur http://localhost:<port> pendant le hackathon
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # pour le hackathon ; à restreindre en production
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+def kn() -> knowledge.Knowledge:
+    return knowledge.get_knowledge()
+
+
+# ----------------------------------------------------------------------------------------
+# Modèles de requête / réponse
+# ----------------------------------------------------------------------------------------
+
+class Message(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(..., min_length=1)
 
 
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=1, examples=["Prépare mon rendez-vous du 3 décembre avec la Laiterie des Pyrénées."])
-    top_k: int = Field(config.TOP_K, ge=1, le=20, description="Nombre de passages à retrouver")
+    history: list[Message] = Field(default_factory=list, description="Échanges précédents du chat (facultatif)")
+    entreprise_id: str | None = Field(None, examples=["capilla-nova"], description="Limite la recherche à un client ou prospect")
+    top_k: int = Field(config.TOP_K, ge=1, le=20, description="Nombre de passages retrouvés par similarité")
 
 
 class Source(BaseModel):
     chapter: str
     text: str
     score: float | None = Field(None, description="Similarité cosinus (1 = identique). Vide si le passage a été ajouté "
-                                                   "parce que la question nomme ce client ou cette personne.")
+                                                   "parce que la question nomme cette entreprise, cette personne ou ce produit.")
 
 
 class AskResponse(BaseModel):
     question: str
     answer: str
     model: str
+    faits_verifies: list[str] = Field(description="Faits calculés par programme et donnés au LLM")
     sources: list[Source]
 
 
-class Message(BaseModel):
-    role: Literal["user", "assistant"] = Field(description="user = le commercial, assistant = le Digital Twin")
-    content: str = Field(..., min_length=1)
+class ProspectSearchRequest(BaseModel):
+    query: str = Field("", examples=["Trouve-moi 10 marques de cosmétiques françaises qui pourraient avoir besoin de nouvelles fragrances"])
+    limit: int = Field(10, ge=1, le=50)
 
 
-class TwinRequest(BaseModel):
-    twin: str = Field(..., examples=["Marc Etchegaray"], description="Nom (ou prénom) du Digital Twin, voir GET /twins")
-    message: str = Field(..., min_length=1, examples=["Bonjour Monsieur Etchegaray, je viens vous présenter nos nouveautés."],
-                         description="Ce que dit le commercial")
-    history: list[Message] = Field(default_factory=list, description="Échanges précédents (sans le message courant)")
+class PitchRequest(BaseModel):
+    entreprise_id: str = Field(..., examples=["capilla-nova"])
 
 
-class TwinResponse(BaseModel):
-    twin: str
-    reply: str
-    model: str
+class AlertRequest(BaseModel):
+    entreprise_id: str = Field(..., examples=["atelier-verdane"])
+    type: str = Field(..., examples=["fin d'un contrat exclusif"])
 
 
-class CoachRequest(BaseModel):
-    twin: str = Field(..., examples=["Marc Etchegaray"])
-    history: list[Message] = Field(..., min_length=1, description="La conversation complète à évaluer")
-    question: str | None = Field(None, examples=["Quelles erreurs ai-je faites avec ce client ?"],
-                                 description="Question précise du commercial (sinon : évaluation complète selon la grille)")
+class TwinStartRequest(BaseModel):
+    entreprise_id: str = Field(..., examples=["laiterie-des-pyrenees"])
+    contact: str | None = Field(None, examples=["Hélène Bordes"], description="Nom du contact à jouer (sinon le premier de l'entreprise)")
 
 
-class CoachResponse(BaseModel):
-    twin: str
-    evaluation: str
-    model: str
+class TwinMessageRequest(BaseModel):
+    session_id: str
+    message: str = Field(..., min_length=1, examples=["Bonjour Monsieur Etchegaray, parlons du retard de mars."])
 
 
-class TwinInfo(BaseModel):
-    name: str
-    role: str
-    company: str
+class EvaluateRequest(BaseModel):
+    session_id: str
 
 
-# --------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------
 # Outils communs
-# --------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------
 
-def load_rows() -> list[dict]:
-    collection = rag.get_collection()
-    if collection.count() == 0:
-        raise HTTPException(503, "La base est vide : lance d'abord `python ingest.py`.")
-    return kb.all_rows(collection)
-
-
-def to_source(row: dict, score: float | None = None) -> Source:
-    return Source(chapter=row["meta"]["chapter"], text=row["text"], score=score)
+def llm(messages: list[dict], temperature: float = 0.2, json_mode: bool = False) -> str:
+    try:
+        return rag.chat(messages, temperature, json_mode=json_mode).strip()
+    except Exception as exc:  # Ollama injoignable, modèle absent...
+        raise HTTPException(502, f"Erreur Ollama : {exc}") from exc
 
 
-def retrieve(question: str, top_k: int, rows: list[dict]) -> list[Source]:
-    """Passages consacrés aux clients / personnes cités, puis passages les plus proches de la question."""
-    sources = [to_source(r) for r in kb.entity_rows(question, rows)]
-    seen = {s.text for s in sources}
-
-    collection = rag.get_collection()
-    result = collection.query(
-        query_embeddings=[rag.embed_query(question)],
-        n_results=min(top_k, collection.count()),
-    )
-    for doc, meta, dist in zip(result["documents"][0], result["metadatas"][0], result["distances"][0]):
-        if doc not in seen:
-            seen.add(doc)
-            sources.append(Source(chapter=meta["chapter"], text=doc, score=round(1 - dist, 4)))
-    return sources
+def entreprise_or_404(entreprise_id: str) -> dict:
+    ent = kn().entreprise(entreprise_id)
+    if ent is None:
+        raise HTTPException(404, f"Entreprise « {entreprise_id} » introuvable. Voir GET /clients et POST /prospects/search.")
+    return ent
 
 
 def build_context(sources: list[Source]) -> tuple[str, list[Source]]:
@@ -198,107 +139,483 @@ def build_context(sources: list[Source]) -> tuple[str, list[Source]]:
     return "\n\n---\n\n".join(parts), used
 
 
-def blocks(rows: list[dict]) -> str:
-    return "\n\n---\n\n".join(f"[{r['meta']['chapter']}]\n{r['text']}" for r in rows)
+# ----------------------------------------------------------------------------------------
+# Recherche des passages (mode Assistant)
+# ----------------------------------------------------------------------------------------
+
+def collect_sources(question: str, entreprise_id: str | None, top_k: int) -> list[Source]:
+    """Passages à donner au LLM, du plus sûr au moins sûr :
+    1. les fiches des clients, prospects et personnes nommés dans la question (chargées par nom) ;
+    2. les fiches des produits nommés ;
+    3. les règles commerciales et les réponses aux objections (courtes, toujours utiles) ;
+    4. les passages les plus proches de la question (recherche vectorielle, filtrée si entreprise_id).
+    """
+    k = kn()
+    sections = {s["id"]: s for s in k.sections_for(question)}
+    nom_filtre = None
+    if entreprise_id:
+        ent = entreprise_or_404(entreprise_id)
+        nom_filtre = ent["nom"]
+        for s in k.sections_of_entreprise(entreprise_id):
+            sections.setdefault(s["id"], s)
+
+    sources = [Source(chapter=s["chapter"], text=s["texte"]) for s in sections.values()]
+    sources += [Source(chapter=f"Fiche produit {p['code']} {p['nom']}", text=p["texte"]) for p in k.produits_cites(question)]
+    for s in k.sections_of_sujet("secteur", "concurrence"):
+        if s["id"] not in sections:
+            sources.append(Source(chapter=s["chapter"], text=s["texte"]))
+
+    vus = {s.text for s in sources}
+    for hit in rag.search(question, top_k, entreprise=nom_filtre):
+        if hit["text"] not in vus:
+            vus.add(hit["text"])
+            sources.append(Source(chapter=hit["meta"]["chapter"], text=hit["text"], score=hit["score"]))
+    return sources
 
 
-def resolve_twin(name: str, rows: list[dict]) -> dict:
-    found = kb.find_twins(name, rows)
-    if not found:
-        available = ", ".join(t["name"] for t in kb.list_twins(rows))
-        raise HTTPException(404, f"Digital Twin « {name} » introuvable. Disponibles : {available}.")
-    if len(found) > 1:
-        names = ", ".join(t["name"] for t in found)
-        raise HTTPException(409, f"« {name} » correspond à plusieurs Digital Twins ({names}) : précise le nom complet.")
-    return found[0]
+def verified_facts(question: str) -> list[str]:
+    """FAITS VÉRIFIÉS : résultats de rules.py et scoring.py quand la question parle de
+    remise, température, bio, quantité, délai ou score de prospect. Le LLM les reprend tels quels."""
+    k = kn()
+    nq = knowledge.normalize(question)
+    faits: list[str] = []
+    sections = k.sections_for(question)
+    entreprises = {e["id"]: e for s in sections if s["entreprise"]
+                   for e in k.entreprises.values() if e["nom"] == s["entreprise"]}
+    produits = k.produits_cites(question)
+
+    # Remise
+    if re.search(r"\b(remise|accorder|rabais)\b", nq):
+        contrat = 2 if re.search(r"\b(deux|2) ans\b", nq) else 0
+        for brut in re.findall(r"(\d+(?:[.,]\d+)?)\s*%", question):
+            valeur = float(brut.replace(",", "."))
+            faits.append(rules.check_remise(valeur, contrat)["message"])
+            if valeur >= k.regles["remise_contrat_min"] and contrat == 0:
+                faits.append(f"Avec un contrat de deux ans minimum : " + rules.check_remise(valeur, 2)["message"])
+        for ent in entreprises.values():
+            if ent.get("remise_actuelle") is not None:
+                faits.append(f"{ent['nom']} : remise actuelle de {ent['remise_actuelle']} %.")
+
+    # Température
+    if produits and re.search(r"°\s*c|temp[ée]rature|cuit|cuisson|st[ée]ril|four|pasteuris", question.lower()):
+        temperatures = [float(t) for t in re.findall(r"(\d+)\s*°\s*C", question, re.IGNORECASE)]
+        if not temperatures and "steril" in nq:
+            for s in sections:
+                if m := re.search(r"stérilisées à (\d+)\s*°C", s["texte"]):
+                    temperatures.append(float(m.group(1)))
+        for p in produits:
+            if temperatures:
+                faits += [rules.check_temperature(p["code"], t)["message"] for t in temperatures]
+            elif p["temperature_max"] is not None:
+                faits.append(f"{p['code']} {p['nom']} : température maximale {p['temperature_max']} °C (non stable au-delà).")
+            else:
+                faits.append(f"{p['code']} {p['nom']} : aucune température maximale donnée dans la fiche.")
+
+    # Bio
+    if re.search(r"\bbio\b", nq):
+        if produits:
+            faits += [rules.check_bio(p["code"])["message"] for p in produits]
+        else:
+            faits.append("Aucun arôme alimentaire du catalogue n'est certifié bio ; seul FB-112 Ambre Solaire Bio "
+                         "est certifié COSMOS (cosmétique).")
+
+    # Quantités
+    if re.search(r"\bkg\b|tonne|minimum|quantit", nq):
+        trouve = False
+        for valeur, unite in re.findall(r"(\d+(?:[.,]\d+)?)\s*(kg|tonnes?)", question, re.IGNORECASE):
+            kg = float(valeur.replace(",", ".")) * (1000 if unite.lower().startswith("tonne") else 1)
+            faits.append(rules.check_quantite(kg, par_an="an" in nq)["message"])
+            trouve = True
+        if not trouve:
+            faits.append(f"Commande minimum : {k.regles['commande_minimum_kg']} kg par référence ; stock de sécurité réservé "
+                         f"possible à partir de {k.regles['stock_securite_tonnes']} tonne par an.")
+
+    # Délais
+    if re.search(r"\b(delai|delais|echantillons?|livraison|livrer)\b", nq):
+        r = k.regles
+        faits.append(f"Délais : échantillon standard {r['delai_echantillon_jours']} jours ouvrés ; échantillon sur mesure "
+                     f"{r['delai_sur_mesure_semaines']} semaines ; livraison d'un produit catalogue en stock "
+                     f"{r['delai_livraison_jours']} jours ouvrés ; première production sur mesure "
+                     f"{r['delai_premiere_production_semaines']} semaines.")
+
+    # Scores des prospects
+    classement = scoring.classer()
+    if re.search(r"chiffre d affaires|\bca\b|\bachats?\b|\bachete|commande|factur", nq):
+        for ent in entreprises.values():
+            if ent["type"] == "prospect":
+                faits.append(f"{ent['nom']} est un prospect, pas encore client de Givaudan : aucun chiffre d'affaires, "
+                             f"aucune commande et aucune remise avec Givaudan.")
+    veut_le_score = re.search(r"\bscore\b|\brang\b|\btop\b|classement|pourquoi|points|prioritaire|\bnote\b", nq)
+    for p in classement:
+        if veut_le_score and p["id"] in entreprises:
+            detail = " ; ".join(f"{d['libelle']} {d['points']}/{d['maximum']}" + (f" ({d['commentaire']})" if d["commentaire"] else "")
+                                for d in p["details"].values())
+            faits.append(f"Score de {p['nom']} : {p['score']}/100, rang {p['rang']} sur {len(classement)} (calculé par programme). "
+                         f"Détail : {detail}.")
+    if re.search(r"\bprospects?\b|marques? de cosmetiques|top 10|classement", nq):
+        faits.append("Classement des prospects cosmétiques (score calculé par programme) : "
+                     + " ; ".join(f"{p['rang']}. {p['nom']} {p['score']}/100" for p in classement) + ".")
+    return faits
 
 
-def history_messages(history: list[Message]) -> list[dict]:
-    return [{"role": m.role, "content": m.content} for m in history[-config.MAX_HISTORY:]]
-
-
-def llm(messages: list[dict], temperature: float) -> str:
-    try:
-        return rag.chat(messages, temperature).strip()
-    except Exception as exc:  # Ollama injoignable, modèle absent...
-        raise HTTPException(502, f"Erreur Ollama : {exc}") from exc
-
-
-# --------------------------------------------------------------------------------------
-# Routes
-# --------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------
+# Écran 0 — Assistant
+# ----------------------------------------------------------------------------------------
 
 @app.get("/health", tags=["système"])
 def health():
-    """Vérifie que la base est chargée et indique les modèles utilisés."""
-    return {
-        "chunks": rag.get_collection().count(),
-        "llm_model": config.LLM_MODEL,
-        "embed_model": config.EMBED_MODEL,
-    }
+    """Vérifie Ollama et le nombre de morceaux indexés."""
+    ollama_ok = rag.ollama_available()
+    try:
+        chunks = rag.get_collection().count()
+    except Exception:
+        chunks = 0
+    return {"status": "ok" if ollama_ok and chunks else "degraded", "ollama": ollama_ok, "chunks": chunks,
+            "llm_model": config.LLM_MODEL, "embed_model": config.EMBED_MODEL}
 
 
-@app.get("/twins", response_model=list[TwinInfo], tags=["twin"])
-def twins():
-    """Liste les Digital Twins disponibles pour les modes Twin et Coach."""
-    return [TwinInfo(**{k: t[k] for k in ("name", "role", "company")}) for t in kb.list_twins(load_rows())]
+@app.get("/prompts", tags=["assistant"])
+def bibliotheque_prompts():
+    """Liste fixe de questions par catégorie (préparation, pendant le RDV, entraînement, prospection)."""
+    return prompts.BIBLIOTHEQUE
 
 
 @app.post("/search", response_model=list[Source], tags=["assistant"])
 def search(req: AskRequest):
-    """Retourne seulement les passages pertinents des documents commerciaux (sans appeler le LLM)."""
-    return retrieve(req.question, req.top_k, load_rows())
+    """Passages retrouvés seulement (sans LLM), pour déboguer."""
+    return collect_sources(req.question, req.entreprise_id, req.top_k)
 
 
 @app.post("/ask", response_model=AskResponse, tags=["assistant"])
 def ask(req: AskRequest):
-    """**Mode Assistant** : répond à une question commerciale (préparation de RDV, objection en direct, pilotage, prospection)."""
-    sources = retrieve(req.question, req.top_k, load_rows())
+    """**Mode Assistant** : préparer un RDV, répondre en direct, piloter, prospecter. Avec `entreprise_id`, la recherche est filtrée."""
+    sources = collect_sources(req.question, req.entreprise_id, req.top_k)
     context, used = build_context(sources)
-    messages = [
-        {"role": "system", "content": ASSISTANT_PROMPT},
-        {"role": "user", "content": f"Extraits des documents commerciaux :\n\n{context}\n\nQuestion : {req.question}"},
-    ]
+    faits = verified_facts(req.question)
+
+    texte_faits = "\n".join(f"- {f}" for f in faits) or "- Aucun fait calculé pour cette question."
+    messages = [{"role": "system", "content": prompts.ASSISTANT_PROMPT}]
+    messages += [{"role": m.role, "content": m.content} for m in req.history[-config.ASK_HISTORY:]]
+    messages.append({"role": "user", "content": (
+        f"Extraits des documents :\n\n{context}\n\nFAITS VÉRIFIÉS (calculés par programme) :\n{texte_faits}\n\n"
+        f"Question : {req.question}")})
     answer = llm(messages, temperature=0.2)
-    return AskResponse(question=req.question, answer=answer, model=config.LLM_MODEL, sources=used)
+    return AskResponse(question=req.question, answer=answer, model=config.LLM_MODEL, faits_verifies=faits, sources=used)
 
 
-@app.post("/twin", response_model=TwinResponse, tags=["twin"])
-def twin(req: TwinRequest):
-    """**Mode Twin** : le Digital Twin répond au commercial, en restant dans son personnage.
+@app.post("/voice/transcribe", tags=["assistant"])
+async def voice_transcribe(request: Request):
+    """Bonus : audio -> texte, avec `faster-whisper` en local. Envoyer le fichier audio brut dans le corps de la requête."""
+    audio = await request.body()
+    if not audio:
+        raise HTTPException(400, "Aucun audio reçu : envoie le fichier audio dans le corps de la requête.")
+    try:
+        from faster_whisper import WhisperModel
+    except ImportError as exc:
+        raise HTTPException(501, "faster-whisper n'est pas installé : pip install faster-whisper") from exc
+    with tempfile.NamedTemporaryFile(suffix=".audio", delete=False) as fichier:
+        fichier.write(audio)
+    segments, _ = WhisperModel("base", device="cpu", compute_type="int8").transcribe(fichier.name, language="fr")
+    return {"text": " ".join(s.text.strip() for s in segments)}
 
-    L'API ne garde pas la conversation : renvoie à chaque appel les échanges précédents dans `history`.
+
+@app.post("/attach", tags=["assistant"])
+def attach():
+    """Le bouton « Attach » est hors périmètre du hackathon."""
+    raise HTTPException(501, "L'envoi de pièces jointes n'est pas disponible dans cette version.")
+
+
+# ----------------------------------------------------------------------------------------
+# Écrans 1 à 3 — Prospection cosmétique (sans IA)
+# ----------------------------------------------------------------------------------------
+
+# Mot de la requête -> segment cherché dans les fiches (la requête sert de filtre simple, pas de recherche IA)
+SEGMENTS = {"bebe": "bebe", "solaire": "solaire", "homme": "homme", "barbe": "barbe", "capillaire": "cheveux",
+            "cheveux": "cheveux", "bien etre": "bien etre", "recharge": "recharge", "peaux sensibles": "peaux sensibles",
+            "thalasso": "thalasso"}
+
+
+@app.post("/prospects/search", tags=["prospection"])
+def prospects_search(req: ProspectSearchRequest):
+    """Écran 1 — prospects cosmétiques triés par score (calculé par du code Python, jamais par l'IA).
+
+    La requête ne sert qu'à filtrer si elle nomme un segment précis (bébé, solaire, homme, recharge...).
+    Sinon, tous les prospects sont classés. Le résultat est le même à chaque appel.
     """
-    rows = load_rows()
-    t = resolve_twin(req.twin, rows)
-    sheet, background = kb.twin_rows(t, rows)
+    classement = scoring.classer()
+    nq = knowledge.normalize(req.query)
+    for mot, segment in SEGMENTS.items():
+        if f" {mot} " in f" {nq} ":
+            classement = [p for p in classement
+                          if segment in knowledge.normalize(" ".join([p["identite"], p["accroche"], p["signaux"], p["pourquoi"]]))]
+            break
+    return {
+        "query": req.query,
+        "total": len(classement),
+        "prospects": [{"id": p["id"], "nom": p["nom"], "ville": p["ville"], "score": p["score"], "rang": p["rang"],
+                       "accroche": p["accroche"]} for p in classement[:req.limit]],
+    }
+
+
+@app.get("/prospects/{prospect_id}", tags=["prospection"])
+def prospect_detail(prospect_id: str):
+    """Écrans 2 et 3 — fiche détaillée, « Pourquoi cette entreprise ? » et détail du score."""
+    prospect = kn().prospect(prospect_id)
+    if prospect is None:
+        raise HTTPException(404, f"Prospect « {prospect_id} » introuvable.")
+    p = scoring.prospect_score(prospect_id) or {**prospect, "score": None, "rang": None, "details": {}, "anomalies": []}
+    produits = [pr["code"] for pr in kn().produits if pr["code"] in p["produits_adaptes"]]
+    return {
+        "id": p["id"], "nom": p["nom"], "ville": p["ville"], "score": p["score"], "score_maximum": scoring.SCORE_MAXIMUM,
+        "rang": p["rang"], "accroche": p["accroche"], "identite": p["identite"], "signaux": p["signaux"],
+        "pourquoi_cette_entreprise": p["pourquoi"], "produits_adaptes": p["produits_adaptes"], "codes_produits": produits,
+        "contact": {"nom": p["contact_nom"], "role": p["contact_role"], "texte": p["contact_texte"]},
+        "profil_digital_twin": p["profil_twin"],
+        "details_score": [{"critere": cle, **d} for cle, d in p["details"].items()],
+        "points_manquants": [{"critere": cle, "libelle": d["libelle"], "manque": d["maximum"] - d["points"]}
+                             for cle, d in p["details"].items() if d["points"] < d["maximum"]],
+        "prochaine_etape": p["prochaine_etape"],
+        "anomalies_score": p["anomalies"],
+    }
+
+
+@app.post("/pitch", tags=["prospection"])
+def pitch(req: PitchRequest):
+    """Pitch avec la méthode CAP, adapté au profil DISC du contact et basé sur les produits adaptés."""
+    k = kn()
+    ent = entreprise_or_404(req.entreprise_id)
+    prospect = k.prospect(req.entreprise_id)
+    if prospect:
+        fiche = k.twin_text(k.twin_for(req.entreprise_id) or {"source": "prospect", "entreprise_id": req.entreprise_id}) \
+            if prospect["profil_twin"] else prospect["identite"]
+        adaptes, contact = prospect["produits_adaptes"], prospect["contact_nom"]
+        profil, accroche = prospect["profil_twin"], prospect["accroche"]
+    else:
+        textes = [s["texte"] for s in k.sections_of_entreprise(req.entreprise_id)]
+        fiche = "\n\n".join(textes)
+        adaptes = " ".join(m.group(0) for t in textes for m in re.finditer(r"(Opportunités|Opportunities|Pistes de solutions)\s*:[^\n]+", t))
+        twin = k.twin_for(req.entreprise_id)
+        contact, profil, accroche = (twin["nom"] if twin else ""), "", ""
+    codes = sorted({m.upper() for m in re.findall(r"\b((?:TW|FB)-\d+E?)\b", adaptes, re.IGNORECASE)})
+    produits = [p for p in (k.produit(c) for c in codes) if p]
+    texte_produits = "\n".join(f"- {p['texte']}" for p in produits) or "Aucun produit du catalogue : développement sur mesure."
+
     messages = [
-        {"role": "system", "content": twin_prompt(t, blocks(sheet), blocks(background))},
-        *history_messages(req.history),
-        {"role": "user", "content": req.message},
+        {"role": "system", "content": prompts.PITCH_PROMPT},
+        {"role": "user", "content": (
+            f"Entreprise : {ent['nom']}\nContact : {contact or 'non identifié'}\nProjet : {accroche}\n\n"
+            f"Fiche :\n{fiche}\n\nProfil DISC / SONCAS : {profil or 'voir la fiche'}\n\n"
+            f"Produits adaptés (fiches techniques) :\n{texte_produits}\n\nÉcris le pitch.")},
     ]
-    return TwinResponse(twin=t["name"], reply=llm(messages, temperature=0.6), model=config.LLM_MODEL)
+    return {"entreprise": ent["nom"], "contact": contact, "produits": [p["code"] for p in produits],
+            "pitch": llm(messages, temperature=0.4), "model": config.LLM_MODEL}
 
 
-@app.post("/coach", response_model=CoachResponse, tags=["coach"])
-def coach(req: CoachRequest):
-    """**Mode Coach** : note la conversation du commercial avec le Digital Twin selon la grille d'évaluation."""
-    rows = load_rows()
-    t = resolve_twin(req.twin, rows)
-    sheet, background = kb.twin_rows(t, rows)
-    reference = kb.rows_of_kind(rows, "methodes", "regles", "objections", "grille")
-    context = blocks(sheet + background + reference)
+# ----------------------------------------------------------------------------------------
+# Alertes de veille (enregistrées dans alerts.json)
+# ----------------------------------------------------------------------------------------
 
-    twin_name = t["name"]
-    transcript = "\n".join(
-        f"{'Commercial' if m.role == 'user' else twin_name} : {m.content}" for m in req.history[-config.MAX_HISTORY:]
-    )
-    task = req.question or "Évalue ma conversation selon la grille."
+def load_alerts() -> list[dict]:
+    try:
+        return json.loads(config.ALERTS_PATH.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
+
+@app.post("/alerts", status_code=201, tags=["alertes"])
+def create_alert(req: AlertRequest):
+    """Crée une alerte : une entreprise (client ou prospect) et un type de signal listé dans « Alertes de veille »."""
+    ent = entreprise_or_404(req.entreprise_id)
+    types = {knowledge.normalize(t): t for t in kn().types_alertes}
+    type_alerte = types.get(knowledge.normalize(req.type))
+    if type_alerte is None:
+        raise HTTPException(422, f"Type d'alerte inconnu. Types possibles : {', '.join(kn().types_alertes)}.")
+    alerte = {"id": uuid.uuid4().hex[:8], "entreprise_id": ent["id"], "entreprise": ent["nom"], "type": type_alerte,
+              "cree_le": datetime.now().isoformat(timespec="seconds")}
+    alertes = load_alerts() + [alerte]
+    config.ALERTS_PATH.write_text(json.dumps(alertes, ensure_ascii=False, indent=2), encoding="utf-8")
+    return alerte
+
+
+@app.get("/alerts", tags=["alertes"])
+def list_alerts():
+    return {"alertes": load_alerts(), "types": kn().types_alertes, "recommandees": kn().alertes_recommandees}
+
+
+# ----------------------------------------------------------------------------------------
+# Menus : Mes clients, Insights, Solutions (sans IA)
+# ----------------------------------------------------------------------------------------
+
+def client_summary(ent: dict) -> dict:
+    return {"id": ent["id"], "nom": ent["nom"], "statut": ent["statut"], "chiffre_affaires_2025": ent["chiffre_affaires_2025"],
+            "remise_actuelle": ent["remise_actuelle"], "client_depuis": ent["client_depuis"],
+            "contacts": [{"nom": t["nom"], "role": t["role"]} for t in kn().twins if t["entreprise_id"] == ent["id"]]}
+
+
+@app.get("/clients", tags=["menus"])
+def clients():
+    return [client_summary(e) for e in kn().entreprises.values() if e["type"] == "client"]
+
+
+@app.get("/clients/{client_id}", tags=["menus"])
+def client_detail(client_id: str):
+    ent = kn().entreprise(client_id)
+    if ent is None or ent["type"] != "client":
+        raise HTTPException(404, f"Client « {client_id} » introuvable. Voir GET /clients.")
+    sections = kn().sections_of_entreprise(client_id)
+    return {**client_summary(ent),
+            "fiche": next(s["texte"] for s in sections if s["type"] == "client"),
+            "comptes_rendus": [{"titre": s["chapter"], "texte": s["texte"]} for s in sections if s["type"] == "compte_rendu"]}
+
+
+@app.get("/insights", tags=["menus"])
+def insights():
+    k = kn()
+
+    def lignes(sujet: str) -> list[dict]:
+        sortie = []
+        for section in k.sections_of_sujet(sujet):
+            for paragraphe in section["paragraphes"]:
+                titre, _, texte = paragraphe.partition(" : ")
+                sortie.append({"titre": titre, "texte": texte or paragraphe})
+        return sortie
+
+    return {"tendances": lignes("tendances"), "veille": lignes("veille"),
+            "alertes_recommandees": k.alertes_recommandees, "alertes": load_alerts()}
+
+
+@app.get("/solutions", tags=["menus"])
+def solutions():
+    return [{key: p[key] for key in ("code", "nom", "division", "dosage", "temperature_max", "allergenes", "prix_kg", "certifications", "bio")}
+            for p in kn().produits]
+
+
+# ----------------------------------------------------------------------------------------
+# Simulation de rendez-vous avec un Digital Twin
+# ----------------------------------------------------------------------------------------
+
+SESSIONS: dict[str, dict] = {}  # en mémoire : perdues au redémarrage de l'API
+MAX_SESSIONS = 200
+
+
+def session_or_404(session_id: str) -> dict:
+    session = SESSIONS.get(session_id)
+    if session is None:
+        raise HTTPException(404, "Session inconnue : démarre une simulation avec POST /twin/start.")
+    return session
+
+
+@app.post("/twin/start", tags=["twin"])
+def twin_start(req: TwinStartRequest):
+    """Le LLM joue le client. Le profil est chargé en entier par nom (jamais par recherche vectorielle)."""
+    ent = entreprise_or_404(req.entreprise_id)
+    twin = kn().twin_for(req.entreprise_id, req.contact)
+    if twin is None:
+        disponibles = [t["nom"] for t in kn().twins if t["entreprise_id"] == req.entreprise_id]
+        detail = (f"Contacts disponibles : {', '.join(disponibles)}." if disponibles
+                  else f"{ent['nom']} n'a pas de Digital Twin.")
+        raise HTTPException(404, f"Digital Twin introuvable. {detail}")
+
+    profil = kn().twin_text(twin)
+    system = prompts.twin_prompt(twin["nom"], twin["role"], twin["entreprise"], profil, twin["langue"])
+    ouverture = llm([{"role": "system", "content": system}, {"role": "user", "content": prompts.OUVERTURE_TWIN}], temperature=0.5)
+
+    if len(SESSIONS) >= MAX_SESSIONS:
+        SESSIONS.pop(next(iter(SESSIONS)))
+    session_id = uuid.uuid4().hex[:12]
+    SESSIONS[session_id] = {"twin": twin, "system": system, "profil": profil,
+                            "messages": [{"role": "assistant", "content": ouverture}]}
+    return {"session_id": session_id, "twin": {"nom": twin["nom"], "role": twin["role"], "entreprise": twin["entreprise"]},
+            "reply": ouverture}
+
+
+@app.post("/twin/message", tags=["twin"])
+def twin_message(req: TwinMessageRequest):
+    """Le commercial parle ; le Twin répond. L'historique est gardé en mémoire (8 derniers échanges envoyés au LLM)."""
+    session = session_or_404(req.session_id)
+    twin = session["twin"]
+    historique = session["messages"][-2 * config.TWIN_EXCHANGES:]
+    messages = [{"role": "system", "content": session["system"]}, *historique,
+                {"role": "system", "content": prompts.twin_reminder(twin["nom"], session["profil"], twin["langue"])},
+                {"role": "user", "content": req.message}]
+    reply = llm(messages, temperature=0.4)
+    session["messages"] += [{"role": "user", "content": req.message}, {"role": "assistant", "content": reply}]
+    return {"session_id": req.session_id, "reply": reply, "tour": sum(m["role"] == "user" for m in session["messages"])}
+
+
+# ----------------------------------------------------------------------------------------
+# Évaluation (Coach)
+# ----------------------------------------------------------------------------------------
+
+def parse_json(brut: str) -> dict:
+    try:
+        return json.loads(brut)
+    except json.JSONDecodeError:
+        m = re.search(r"\{.*\}", brut, re.DOTALL)
+        if not m:
+            raise
+        return json.loads(m.group(0))
+
+
+def clamp_note(valeur) -> int:
+    try:
+        return max(0, min(5, int(round(float(valeur)))))
+    except (TypeError, ValueError):
+        return 0
+
+
+@app.post("/coach/evaluate", tags=["coach"])
+def coach_evaluate(req: EvaluateRequest):
+    """Note la simulation avec la grille. Les infractions sont détectées par `rules.detect_infractions`
+    (code Python) et plafonnent la note « règles » : le LLM ne peut pas les contredire."""
+    session = session_or_404(req.session_id)
+    twin = session["twin"]
+    infractions = []
+    tour = 0
+    for m in session["messages"]:
+        if m["role"] != "user":
+            continue
+        tour += 1
+        for inf in rules.detect_infractions(m["content"]):
+            infractions.append({**inf, "tour": tour, "extrait": m["content"][:160]})
+    if tour == 0:
+        raise HTTPException(400, "Aucun message du commercial à évaluer : écris d'abord au Twin avec POST /twin/message.")
+
+    transcription = "\n".join(
+        f"{prompts.COMMERCIAL if m['role'] == 'user' else twin['nom']} : {m['content']}" for m in session["messages"])
+    texte_infractions = "\n".join(f"- Tour {i['tour']} : {i['message']}" for i in infractions) or "- Aucune infraction détectée."
+    techniques = "\n\n".join(s["texte"] for s in kn().sections_of_sujet("techniques"))
     messages = [
-        {"role": "system", "content": coach_prompt(t, context)},
-        {"role": "user", "content": f"Conversation à évaluer :\n\n{transcript}\n\nDemande du commercial : {task}"},
+        {"role": "system", "content": prompts.COACH_PROMPT},
+        {"role": "user", "content": (
+            f"Profil du Digital Twin ({twin['nom']}), pour repérer les informations cachées :\n{session['profil']}\n\n"
+            f"Techniques de vente de l'équipe :\n{techniques}\n\n"
+            f"INFRACTIONS DÉTECTÉES (vérifiées par programme) :\n{texte_infractions}\n\n"
+            f"CONVERSATION :\n{transcription}")},
     ]
-    return CoachResponse(twin=twin_name, evaluation=llm(messages, temperature=0.3), model=config.LLM_MODEL)
+    resultat = None
+    for temperature in (0.2, 0.0):  # un second essai si le JSON est invalide
+        try:
+            resultat = parse_json(llm(messages, temperature=temperature, json_mode=True))
+            break
+        except json.JSONDecodeError:
+            continue
+    if resultat is None:
+        raise HTTPException(502, "Le LLM n'a pas renvoyé un JSON valide : relance l'évaluation.")
+
+    brutes = resultat.get("notes") if isinstance(resultat.get("notes"), dict) else {}
+    notes = {critere: clamp_note(brutes.get(critere)) for critere in prompts.CRITERES_COACH}
+    if infractions:  # décision de code, pas du LLM
+        notes["regles"] = min(notes["regles"], 1)
+    decouvertes = resultat.get("infos_cachees_decouvertes")
+    return {
+        "session_id": req.session_id, "twin": twin["nom"], "notes": notes,
+        "total": sum(notes.values()), "total_maximum": 5 * len(notes),
+        "point_fort": resultat.get("point_fort", ""), "a_ameliorer": resultat.get("a_ameliorer", ""),
+        "phrase_plus_efficace": resultat.get("phrase_plus_efficace", ""),
+        "infos_cachees_decouvertes": decouvertes if isinstance(decouvertes, list) else [],
+        "infractions": infractions,
+    }
 
 
 if __name__ == "__main__":

@@ -17,13 +17,17 @@ COLLECTION_NAME = os.getenv("COLLECTION_NAME", "knowledge")
 
 # Source et découpage
 KNOWLEDGE_PATH = Path(os.getenv("KNOWLEDGE_PATH", BASE_DIR / "story.txt"))
-CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1200"))  # en caractères, pour les sections longues
+CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1000"))  # en caractères, pour les sections longues
 WHOLE_SECTION_MAX = int(os.getenv("WHOLE_SECTION_MAX", "3000"))  # une section plus courte reste d'un seul tenant
 CHUNK_OVERLAP_PARAGRAPHS = int(os.getenv("CHUNK_OVERLAP_PARAGRAPHS", "1"))
 
 # Recherche
-TOP_K = int(os.getenv("TOP_K", "6"))
+TOP_K = int(os.getenv("TOP_K", "5"))
 MAX_CONTEXT_CHARS = int(os.getenv("MAX_CONTEXT_CHARS", "16000"))  # budget de texte envoyé au LLM
 
 # Modes Twin / Coach
-MAX_HISTORY = int(os.getenv("MAX_HISTORY", "30"))  # nombre de messages d'historique conservés
+TWIN_EXCHANGES = int(os.getenv("TWIN_EXCHANGES", "8"))  # derniers échanges envoyés au LLM pendant une simulation
+ASK_HISTORY = int(os.getenv("ASK_HISTORY", "6"))  # derniers messages de l'historique du chat Assistant
+
+# Alertes de veille (créées depuis l'application)
+ALERTS_PATH = Path(os.getenv("ALERTS_PATH", BASE_DIR / "alerts.json"))

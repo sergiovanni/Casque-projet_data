@@ -1,149 +1,152 @@
 # Givaudan AI Sales Copilot API (équipe Casque)
 
-Assistant commercial pour le secteur France Sud-Ouest, via une API FastAPI. Les passages
-pertinents de la base de connaissances (`story.txt`) sont retrouvés dans une base
-vectorielle (ChromaDB), puis un LLM Ollama rédige la réponse.
+Copilote du commercial **Jordan Dubois** (secteur France Sud-Ouest et prospection cosmétique). L'API
+FastAPI s'appuie sur une base de connaissances (`story.txt`), une base vectorielle (ChromaDB) et un LLM
+local (Ollama). Tout tourne en local : pas de service payant, pas de clé API.
 
-Trois modes :
+> **Règle d'or : l'IA ne calcule rien et ne décide rien de chiffré.** Les scores, remises, températures,
+> minimums de commande et délais sont vérifiés en Python (`scoring.py`, `rules.py`). Le LLM rédige
+> seulement du texte à partir de données déjà vérifiées.
 
-| Mode          | Route         | Rôle |
-|---------------|---------------|------|
-| **Assistant** | `POST /ask`   | Le commercial pose une question (préparer un RDV, répondre à une objection en direct, piloter le secteur, prospecter). L'IA répond à partir des documents. |
-| **Twin**      | `POST /twin`  | L'IA joue un client (Digital Twin). Le commercial lui parle comme en rendez-vous. |
-| **Coach**     | `POST /coach` | Après une simulation, l'IA note le commercial avec la grille d'évaluation (6 critères : DISC, SPIN, CAP, objections, règles, engagement). |
+## Ce que fait l'API
+
+| Mode | Endpoints | Rôle |
+|------|-----------|------|
+| **Assistant** | `POST /ask`, `POST /pitch` | Préparer un RDV, répondre en direct, prospecter. Réponses à partir des documents, avec les « faits vérifiés » calculés par code. |
+| **Prospection** | `POST /prospects/search`, `GET /prospects/{id}` | Prospects cosmétiques triés par score. **Sans IA.** |
+| **Twin** | `POST /twin/start`, `POST /twin/message` | Le LLM joue le client (Digital Twin), le commercial s'entraîne. |
+| **Coach** | `POST /coach/evaluate` | Note la simulation avec la grille (DISC, SPIN, CAP, objections, règles, engagement). |
 
 ## Fichiers du projet
 
-| Fichier            | Rôle |
-|--------------------|------|
-| `story.txt`        | La base de connaissances : règles commerciales, catalogue, méthodes de vente, fiches clients et prospects, comptes rendus, Digital Twins, veille, scénarios d'entraînement. Chaque section commence par un titre « I. … », « VIII. Digital Twin — … ». Données fictives. |
-| `ingest.py`        | Charge `story.txt` dans la base : une entrée par section (les sections de moins de 3000 caractères restent entières, les autres sont découpées), avec ses métadonnées (type, client, Digital Twin) et ses embeddings Ollama. Peut être relancé : l'ancienne version du fichier est remplacée. Accepte un autre fichier : `python ingest.py autre.txt`. |
-| `kb.py`            | Lecture structurée de la base : type de chaque section, liste des Digital Twins, repérage des clients et personnes cités dans une question. |
-| `clean.py`         | Vide la base (supprime la collection ChromaDB). |
-| `api.py`           | L'API FastAPI et son Swagger, avec les trois modes et leurs prompts. |
-| `list.py`          | Affiche le contenu de la base : modèle d'embeddings, nombre de morceaux, puis chaque morceau groupé par section. Avec `--full`, affiche le texte complet. |
-| `rag.py`           | Code partagé : connexion à ChromaDB, embeddings et appel du LLM via Ollama. |
-| `config.py`        | Tous les réglages, modifiables par variables d'environnement. |
-| `smoke_test.py`    | Pose à l'API une vingtaine de questions de `questions_test.md` et affiche réponse et réponse attendue. |
-| `requirements.txt` | Dépendances Python : FastAPI, Uvicorn, Ollama, ChromaDB. |
-| `chroma_db/`       | Base vectorielle créée par `ingest.py` (non versionnée). |
+| Fichier | Rôle |
+|---------|------|
+| `story.txt` | **La seule source de données** : règles commerciales, catalogue, méthodes de vente, clients, prospects, comptes rendus, Digital Twins, veille. Données fictives. À ne pas modifier par code. |
+| `knowledge.py` | Lit `story.txt` au démarrage : sections, entreprises, prospects, produits, Digital Twins, règles chiffrées. Repère aussi les clients, personnes et produits cités dans une question. |
+| `scoring.py` | Score des prospects : additionne les points de « Données de score », vérifie la grille et le total écrit (alerte dans les logs si écart), trie par score. |
+| `rules.py` | Règles métier (fonctions pures, testées) : `check_remise`, `check_temperature`, `check_bio`, `check_quantite`, `detect_infractions`. |
+| `prompts.py` | Les prompts des modes Assistant, Twin, Coach et Pitch, et la bibliothèque de questions. |
+| `ingest.py` | Charge `story.txt` dans ChromaDB, avec les métadonnées `type` et `entreprise`. Peut être relancé : l'ancienne version est remplacée. |
+| `rag.py` | Embeddings, recherche (filtrée par entreprise si besoin) et appel du LLM via Ollama. |
+| `api.py` | L'API FastAPI et son Swagger (tous les endpoints). |
+| `config.py` | Les réglages, modifiables par variables d'environnement. |
+| `clean.py` / `list.py` | Vider la base / afficher son contenu (`--full` pour le texte complet). |
+| `eval_questions.py` | Lance toutes les questions de `questions_test.md` sur l'API et écrit `rapport_eval.md`. |
+| `tests/` | `test_rules.py`, `test_scoring.py`, `test_api.py` (l'API est testée avec un faux LLM : rapide, sans Ollama). |
+| `questions_test.md` | Questions de test et réponses attendues, par mode. |
+| `BRIEF_CLAUDE_CODE.md` | Le cahier des charges de la refonte. |
 
 ## Installation
 
-Prérequis : Python 3.10+ et [Ollama](https://ollama.com) lancé en local.
-
-### 1. Créer et activer un environnement virtuel
+Prérequis : Python 3.11+ et [Ollama](https://ollama.com) lancé en local.
 
 ```bash
 python -m venv .venv
 ```
 
-| Terminal                  | Commande                          |
-|---------------------------|-----------------------------------|
-| Windows PowerShell        | `.venv\Scripts\Activate.ps1`      |
-| Windows cmd               | `.venv\Scripts\activate.bat`      |
-| Git Bash (Windows)        | `source .venv/Scripts/activate`   |
-| macOS / Linux             | `source .venv/bin/activate`       |
-
-Si PowerShell refuse d'exécuter le script d'activation : `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
-
-### 2. Installer les dépendances
+| Terminal | Activation |
+|----------|------------|
+| Windows PowerShell | `.venv\Scripts\Activate.ps1` (si refusé : `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`) |
+| Windows cmd | `.venv\Scripts\activate.bat` |
+| Git Bash | `source .venv/Scripts/activate` |
+| macOS / Linux | `source .venv/bin/activate` |
 
 ```bash
 pip install -r requirements.txt
+ollama pull nomic-embed-text    # embeddings
+ollama pull llama3.2:3b         # LLM (choisi dans notre benchmark)
 ```
 
-### 3. Télécharger les modèles Ollama
+Sous Git Bash, si `ollama` n'est pas reconnu : `export PATH="$LOCALAPPDATA/Programs/Ollama:$PATH"`.
+
+## Lancement
 
 ```bash
-ollama pull nomic-embed-text   # modèle d'embeddings
-ollama pull llama3.2:3b        # LLM (ou un autre, voir Configuration)
-```
-
-Un modèle plus gros (par exemple `llama3.1:8b`) suit mieux les consignes de jeu de rôle et d'évaluation.
-
-## Utilisation
-
-```bash
-python ingest.py        # charge story.txt dans la base (chroma_db/)
-python list.py          # affiche le contenu de la base (--full pour le texte complet)
-python clean.py         # vide la base
+python ingest.py        # charge story.txt dans la base (à refaire quand story.txt change)
 python api.py           # lance l'API sur http://127.0.0.1:8000
-python smoke_test.py    # pose des questions de test à l'API lancée
+pytest                  # lance les tests (sans Ollama)
+python eval_questions.py   # évalue l'API sur questions_test.md (Ollama et l'API lancés)
 ```
 
 Swagger : http://127.0.0.1:8000/docs
 
-Pour recharger après modification de `story.txt` : relancer `python ingest.py` (ou `python clean.py` puis `python ingest.py`).
+Pour changer de modèle : variable d'environnement `LLM_MODEL` (ou valeur par défaut dans `config.py`).
+Si vous changez `EMBED_MODEL`, relancez `python clean.py` puis `python ingest.py`.
 
-## Endpoints
+## Endpoints, écran par écran (exemples curl)
 
-| Méthode | Route     | Rôle                                                                 |
-|---------|-----------|----------------------------------------------------------------------|
-| GET     | `/health` | Nombre de morceaux en base et modèles utilisés                       |
-| GET     | `/twins`  | Liste des Digital Twins disponibles (nom, fonction, entreprise)      |
-| POST    | `/search` | Passages retrouvés seulement (sans LLM), pour déboguer               |
-| POST    | `/ask`    | **Assistant** : réponse du LLM + passages sources                    |
-| POST    | `/twin`   | **Twin** : réplique du client simulé                                 |
-| POST    | `/coach`  | **Coach** : évaluation d'une conversation                            |
+Sous Windows, mettre le JSON dans un fichier (`-d @requete.json`) évite les soucis d'accents de Git Bash.
 
-### Assistant
+| Écran / bouton | Endpoint | IA ? |
+|---|---|---|
+| Écran 0 — chat « Go » | `POST /ask` | Oui |
+| Bibliothèque de prompts | `GET /prompts` | Non |
+| Message vocal (bonus) | `POST /voice/transcribe` | Non |
+| Attach | `POST /attach` → 501 | — |
+| Écran 1 — « Lancer la recherche » | `POST /prospects/search` | Non |
+| Écran 2 et 3 — « Consulter », « Pourquoi cette entreprise ? » | `GET /prospects/{id}` | Non |
+| Préparer un pitch | `POST /pitch` | Oui |
+| Créer une alerte | `POST /alerts`, `GET /alerts` | Non |
+| Simuler le RDV | `POST /twin/start`, `POST /twin/message` | Oui |
+| Évaluation | `POST /coach/evaluate` | Oui + règles |
+| Menu Mes clients | `GET /clients`, `GET /clients/{id}` | Non |
+| Menu Insights | `GET /insights` | Non |
+| Menu Solutions | `GET /solutions` | Non |
+| Santé | `GET /health` | Non |
 
-```json
-{"question": "Prépare mon rendez-vous du 3 décembre avec la Laiterie des Pyrénées.", "top_k": 6}
+```bash
+# Écran 0 : poser une question (entreprise_id est facultatif : il limite la recherche à cette entreprise)
+curl -X POST localhost:8000/ask -H "Content-Type: application/json" \
+  -d '{"question": "Puis-je accorder 7 % à Mathilde Garat ?"}'
+# -> {"answer": "...", "faits_verifies": ["Remise de 7 % : possible seulement avec un contrat de deux ans..."], "sources": [...]}
+
+# Écran 1 : les prospects cosmétiques, du meilleur au moins bon (toujours le même résultat)
+curl -X POST localhost:8000/prospects/search -H "Content-Type: application/json" \
+  -d '{"query": "marques de cosmétiques françaises", "limit": 10}'
+
+# Écrans 2 et 3 : la fiche, le « pourquoi » et le détail du score (95 et pas 100 : porte d'entrée à 5/10)
+curl localhost:8000/prospects/maison-alize
+
+# Pitch CAP adapté au profil DISC du contact
+curl -X POST localhost:8000/pitch -H "Content-Type: application/json" -d '{"entreprise_id": "capilla-nova"}'
+
+# Alerte (les types possibles sont dans GET /alerts)
+curl -X POST localhost:8000/alerts -H "Content-Type: application/json" \
+  -d '{"entreprise_id": "atelier-verdane", "type": "fin d'\''un contrat exclusif"}'
+
+# Simuler un rendez-vous, puis l'évaluer
+curl -X POST localhost:8000/twin/start -H "Content-Type: application/json" \
+  -d '{"entreprise_id": "laiterie-des-pyrenees", "contact": "Marc Etchegaray"}'
+# -> {"session_id": "a1b2c3d4e5f6", "twin": {...}, "reply": "..."}
+curl -X POST localhost:8000/twin/message -H "Content-Type: application/json" \
+  -d '{"session_id": "a1b2c3d4e5f6", "message": "Je vous propose un stock de securite reserve."}'
+curl -X POST localhost:8000/coach/evaluate -H "Content-Type: application/json" -d '{"session_id": "a1b2c3d4e5f6"}'
 ```
 
-Quand la question nomme un client (« Laiterie des Pyrénées ») ou une personne (« Marc Etchegaray »),
-leurs fiches sont ajoutées aux passages trouvés par la recherche sémantique.
+L'identifiant d'une entreprise est son nom sans accents, en minuscules, avec des tirets
+(`laiterie-des-pyrenees`, `maison-alize`, `bulle-d-ecume`). La liste est dans `GET /clients` et `POST /prospects/search`.
 
-### Twin
+### Choix à connaître
 
-L'API ne garde pas la conversation en mémoire : le client renvoie les échanges précédents à chaque appel.
-`user` est le commercial, `assistant` est le Digital Twin.
-
-```json
-{
-  "twin": "Marc Etchegaray",
-  "message": "Je vous propose un stock de sécurité réservé.",
-  "history": [
-    {"role": "user", "content": "Bonjour Monsieur Etchegaray."},
-    {"role": "assistant", "content": "Avant toute chose, parlons du retard de mars."}
-  ]
-}
-```
-
-### Coach
-
-```json
-{
-  "twin": "Marc Etchegaray",
-  "history": [
-    {"role": "user", "content": "Bonjour Monsieur Etchegaray."},
-    {"role": "assistant", "content": "Avant toute chose, parlons du retard de mars."}
-  ],
-  "question": "Quelles erreurs ai-je faites ?"
-}
-```
-
-`question` est facultatif : sans lui, le coach fait l'évaluation complète selon la grille.
+- **Le Twin est chargé par nom, jamais par recherche vectorielle** : un client ne peut pas être mélangé avec un autre.
+- **Prospects cosmétiques** : leur Digital Twin vient de la ligne « Profil Digital Twin » de leur fiche. Le prospect ne connaît ni son score ni notre stratégie : ces lignes ne sont pas données au LLM. Atelier Verdane, Laboratoire Sources de Cambo et Miellerie des Landes n'ont pas de profil : `POST /twin/start` renvoie 404.
+- **Évaluation** : `rules.detect_infractions` analyse chaque message du commercial (remise > 8 %, promesse de bio, délai impossible, « sans allergène » faux). Si une infraction est détectée, la note « règles » est plafonnée à 1/5 par le code, quoi que dise le LLM.
+- **Sessions de simulation** : gardées en mémoire (perdues au redémarrage de l'API). Le LLM reçoit les 8 derniers échanges ; l'évaluation lit toute la conversation.
+- **`POST /prospects/search`** : la requête ne sert qu'à filtrer si elle nomme un segment (bébé, solaire, homme, recharge...). Le score n'est jamais calculé par le LLM.
+- **Alertes** : enregistrées dans `alerts.json` (non versionné).
 
 ## Configuration (variables d'environnement)
 
-| Variable                   | Défaut                   |
-|----------------------------|--------------------------|
-| `LLM_MODEL`                | `llama3.2:3b`            |
-| `EMBED_MODEL`              | `nomic-embed-text`       |
-| `OLLAMA_HOST`              | `http://localhost:11434` |
-| `NUM_CTX`                  | `8192` (contexte du LLM, en tokens) |
-| `CHROMA_DIR`               | `./chroma_db`            |
-| `COLLECTION_NAME`          | `knowledge`              |
-| `KNOWLEDGE_PATH`           | `./story.txt`            |
-| `CHUNK_SIZE`               | `1200` (caractères, sections longues) |
-| `WHOLE_SECTION_MAX`        | `3000` (une section plus courte n'est pas découpée) |
-| `CHUNK_OVERLAP_PARAGRAPHS` | `1`                      |
-| `TOP_K`                    | `6`                      |
-| `MAX_CONTEXT_CHARS`        | `16000` (texte envoyé au LLM) |
-| `MAX_HISTORY`              | `30` (messages d'historique conservés) |
-
-Si vous changez `EMBED_MODEL`, relancez `clean.py` puis `ingest.py` : les vecteurs
-de deux modèles différents ne sont pas compatibles.
+| Variable | Défaut |
+|----------|--------|
+| `LLM_MODEL` | `llama3.2:3b` |
+| `EMBED_MODEL` | `nomic-embed-text` |
+| `OLLAMA_HOST` | `http://localhost:11434` |
+| `NUM_CTX` | `8192` (contexte du LLM, en tokens) |
+| `CHROMA_DIR` / `COLLECTION_NAME` | `./chroma_db` / `knowledge` |
+| `KNOWLEDGE_PATH` | `./story.txt` |
+| `CHUNK_SIZE` / `WHOLE_SECTION_MAX` | `1000` / `3000` (caractères ; une section plus courte n'est pas découpée) |
+| `TOP_K` | `5` (passages retrouvés par similarité) |
+| `MAX_CONTEXT_CHARS` | `16000` (texte envoyé au LLM) |
+| `TWIN_EXCHANGES` / `ASK_HISTORY` | `8` / `6` |
+| `ALERTS_PATH` | `./alerts.json` |

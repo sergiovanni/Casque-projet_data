@@ -1,8 +1,8 @@
-Base de connaissances commerciale et Digital Twins clients — Givaudan, secteur France Sud-Ouest (données entièrement fictives créées pour le Givaudan AI Innovation Challenge, équipe Casque)
+Base de connaissances de l'AI Sales Copilot Givaudan — clients, prospects et Digital Twins du commercial Jordan Dubois (données entièrement fictives créées pour le Givaudan AI Innovation Challenge, équipe Casque ; toute ressemblance avec une entreprise ou une personne réelle serait fortuite)
 
 I. Présentation du secteur et règles commerciales
 
-Le secteur France Sud-Ouest est suivi par la commerciale Camille Arnaud, basée à Bordeaux. Il regroupe six clients actifs dans l'agroalimentaire, les boissons et la cosmétique, un client perdu à reconquérir et trois prospects identifiés. Le responsable régional est Thomas Lefèvre ; toute remise supérieure à 8 % doit être validée par lui.
+Le commercial Jordan Dubois, basé à Bordeaux, suit le secteur France Sud-Ouest (six clients actifs dans l'agroalimentaire, les boissons et la cosmétique, un client perdu à reconquérir et trois prospects régionaux). Il est aussi chargé de la prospection nationale des marques de cosmétiques françaises pour la division Fragrance & Beauty, avec onze prospects identifiés. Le responsable régional est Thomas Lefèvre ; toute remise supérieure à 8 % doit être validée par lui.
 
 Règles de prix : la remise standard est de 3 % au-delà de 500 kg commandés par an pour un même arôme, et de 5 % au-delà de 2 tonnes. Les remises de 6 à 8 % sont possibles pour un contrat de deux ans minimum. Les prix sont révisés chaque année au 1er janvier, avec un préavis de 60 jours envoyé au client.
 
@@ -36,6 +36,18 @@ FB-089 Linge Frais Hypoallergénique : composition pour lessives et adoucissants
 
 FB-112 Ambre Solaire Bio : composition certifiée COSMOS (naturelle et bio) pour huiles et laits solaires. Dosage : 0,3 à 0,6 %. Point éclair : 85 °C. Allergène à déclarer : coumarine. Prix : 245 € le kilo.
 
+FB-140 Lavande Sérénité : composition bien-être pour huiles de massage, brumes d'oreiller et soins du soir. Dosage : 0,5 à 1,5 %. Point éclair : 82 °C. Conforme IFRA, 51e amendement. Allergène à déclarer : linalol. Dans un test consommateur interne sur 120 personnes, 78 % se sont dites plus détendues après utilisation. Prix : 190 € le kilo.
+
+FB-155 Thé Blanc Pur : composition très légère pour soins du visage, sans allergène à déclarer au-dessus du seuil réglementaire. Dosage : 0,1 à 0,3 %. Point éclair : 92 °C. Conforme IFRA, 51e amendement. Elle n'est pas validée pour les peaux réactives ou atopiques ni pour les enfants de moins de 3 ans. Prix : 230 € le kilo.
+
+FB-163 Figue Cèdre Capillaire : composition pour shampoings et brumes pour cheveux. Dosage : 0,4 à 1 %. Tenue mesurée de 8 heures sur cheveux. Point éclair : 88 °C. Allergène à déclarer : limonène. Prix : 175 € le kilo.
+
+FB-178 Néroli Marin : composition aux notes marines pour gels douche et soins du corps. Dosage : 0,5 à 1,2 %. Tient bien en milieu tensioactif. Point éclair : 90 °C. Allergène à déclarer : citral. Prix : 150 € le kilo.
+
+FB-191 Cuir Boisé Homme : composition pour huiles à barbe et après-rasage. Dosage : 0,5 à 1 %. Point éclair : 94 °C. Allergène à déclarer : coumarine. Prix : 200 € le kilo.
+
+Services Fragrance & Beauty : développement sur mesure, avec un premier échantillon sous 3 semaines ; atelier de co-création de deux jours au laboratoire Givaudan, gratuit pour les marques dont le potentiel dépasse 1 tonne de parfum par an. Aucune composition du catalogue n'est validée pour les soins des enfants de moins de 3 ans.
+
 IV. Techniques d'argumentaire utilisées par l'équipe commerciale
 
 Méthode DISC, pour adapter sa façon de parler au profil du client. Dominant : pressé, veut des résultats et des chiffres ; aller droit au but. Influent : chaleureux, aime les histoires et la relation ; laisser parler, montrer de l'enthousiasme. Stable : prudent, n'aime pas le changement ; rassurer, avancer pas à pas. Consciencieux : précis, veut des preuves et des documents ; apporter des données techniques.
@@ -68,7 +80,7 @@ Opportunités : la laiterie veut lancer en 2027 une gamme de yaourts « moins su
 
 VII. Compte rendu de visite — Laiterie des Pyrénées, 14 octobre 2026
 
-Visite réalisée par Camille Arnaud avec Hélène Bordes et Marc Etchegaray. Durée : 1 h 30.
+Visite réalisée par Jordan Dubois avec Hélène Bordes et Marc Etchegaray. Durée : 1 h 30.
 
 Échanges : Hélène est satisfaite de la qualité de la vanille, mais trouve que la fraise perd de l'intensité après 3 semaines en rayon. Marc a rappelé le retard de mars et demande une garantie de délai écrite pour 2027. Il a indiqué qu'un concurrent, Symrise, leur a proposé une fraise 12 % moins chère.
 
@@ -310,7 +322,7 @@ XXII. Fiche prospect — Brasserie du Béarn (pas encore cliente)
 
 La Brasserie du Béarn est une brasserie artisanale basée à Lescar, près de Pau, créée en 2016, avec 30 salariés. Elle produit des bières et des limonades artisanales vendues dans les cafés et restaurants du Sud-Ouest. Elle n'a jamais acheté chez Givaudan.
 
-Contact identifié : Antoine Casaubon, responsable production, rencontré par Camille Arnaud au salon agroalimentaire de Pau en septembre 2026. Aucun rendez-vous n'a encore eu lieu.
+Contact identifié : Antoine Casaubon, responsable production, rencontré par Jordan Dubois au salon agroalimentaire de Pau en septembre 2026. Aucun rendez-vous n'a encore eu lieu.
 
 Besoins probables : une limonade aux agrumes moins sucrée et une bière sans alcool au goût moins « plat », à lancer en 2027. Volume estimé : 300 à 500 kg d'arômes par an.
 
@@ -348,15 +360,267 @@ Pistes de solutions : TW-104 Vanille Bourbon Naturelle pour les pains d'épices,
 
 XXV. Fiche prospect — Laboratoire Sources de Cambo (pas encore client)
 
-Le Laboratoire Sources de Cambo est une marque de cosmétiques à base d'eau thermale, basée à Cambo-les-Bains, avec 55 salariés, vendue en pharmacie en France et en Espagne. Il travaille aujourd'hui avec dsm-firmenich.
+Le Laboratoire Sources de Cambo est une marque de cosmétiques à base d'eau thermale, basée à Cambo-les-Bains, avec 55 salariés et un chiffre d'affaires estimé de 9 millions d'euros, vendue en pharmacie en France et en Espagne. Il travaille aujourd'hui avec dsm-firmenich.
 
 Contact identifié : Isabelle Etcheverry, directrice R&D, recommandée par Laura Dufau de Cosmétiques Océane.
 
 Besoins probables : une gamme de crèmes pour peaux atopiques en 2027, avec un parfum très léger sans allergène à déclarer, ou sans parfum.
 
-Pistes de solutions : aucune composition du catalogue ne convient directement, car FB-031 contient du linalol et du limonène, et FB-089 est réservée aux lessives. Il faut proposer un développement sur mesure, avec un échantillon sous 3 semaines.
+Pistes de solutions : aucune composition du catalogue ne convient directement. FB-031 contient du linalol et du limonène, FB-089 est réservée aux lessives, et FB-155 Thé Blanc Pur n'est pas validée pour les peaux atopiques ; elle peut seulement servir de base de départ. Il faut proposer un développement sur mesure, avec un échantillon sous 3 semaines.
 
-XXVI. Veille — signaux récents par client et prospect
+Données de score : lancement 10 (projet connu par recommandation, pas annoncé publiquement) ; recrutement 0 ; tendance 15 (peaux sensibles) ; fournisseur 8 (pas de contrat exclusif connu avec dsm-firmenich) ; taille 10 ; produit adapté 5 (sur mesure) ; porte d'entrée 10 (recommandation). Score total : 58/100.
+
+XXVI. Grille de score des prospects (calculée automatiquement, pas par l'IA)
+
+Le score d'un prospect, sur 100 points, est calculé par un programme à partir de sept critères fixes. L'IA ne doit jamais inventer ni modifier un score : elle explique seulement d'où il vient.
+
+Lancement de gamme (25 points) : 25 si un lancement ou un projet de gamme est annoncé publiquement depuis moins de 12 mois ; 10 si un projet est seulement évoqué ; 0 sinon.
+
+Recrutement (15 points) : 15 si l'entreprise recrute en R&D, en formulation ou en parfum ; 0 sinon.
+
+Tendance (15 points) : 15 si le projet correspond à une tendance du marché suivie par Givaudan (bien-être, peaux sensibles, capillaire, solaire, homme, naturel, recharge) ; 0 sinon.
+
+Fournisseur (15 points) : 15 si une insatisfaction envers le fournisseur actuel est connue ; 8 si aucun contrat exclusif n'est connu ; 0 si un contrat exclusif avec un concurrent est connu.
+
+Taille (10 points) : 10 si le chiffre d'affaires dépasse 5 millions d'euros ou si la croissance dépasse 20 % par an ; 5 entre 1 et 5 millions ; 0 en dessous.
+
+Produit adapté (10 points) : 10 si un produit du catalogue convient ; 5 si un développement sur mesure est nécessaire.
+
+Porte d'entrée (10 points) : 10 en cas de recommandation, de demande entrante ou de rencontre en salon ; 5 si un contact est identifié sans échange ; 0 si aucun contact n'est identifié.
+
+XXVII. Récapitulatif des prospects cosmétiques France (classés par score)
+
+1. Maison Alizé (Montpellier) — 95/100 — Lancement récent d'une gamme bien-être « Rituels du soir ».
+
+2. Capilla Nova (Paris) — 93/100 — Lancement d'une brume parfumée pour cheveux prévu en 2027.
+
+3. Lumen Derma (Toulouse) — 88/100 — Nouvelle gamme dermocosmétique pour peaux sensibles.
+
+4. Solenza (Nice) — 85/100 — Refonte de toute la gamme solaire pour l'été 2027.
+
+5. Hommage Paris (Paris) — 83/100 — Lancement d'une gamme de soins pour la barbe.
+
+6. Ondine & Sel (La Rochelle) — 80/100 — Projet de gamme thalasso pour le corps.
+
+7. Petit Nuage (Nantes) — 73/100 — Lancement d'une gamme de soins bébé.
+
+8. Bulle d'Écume (Lille) — 68/100 — Projet de gels douche en recharge.
+
+9. Laboratoire Sources de Cambo (Cambo-les-Bains) — 58/100 — Projet de crèmes pour peaux atopiques.
+
+10. Terre de Lys (Bordeaux) — 53/100 — Projet de brumes parfumées pour le corps.
+
+11. Atelier Verdane (Lyon) — 50/100 — Recrutement d'un formulateur, mais contrat exclusif avec IFF.
+
+Ces onze marques sont des prospects : aucune n'est encore cliente de Givaudan. Cosmétiques Océane, déjà cliente, n'est pas dans cette liste.
+
+XXVIII. Fiche prospect — Maison Alizé (score 95/100)
+
+Identité : marque de soins et de parfums bien-être basée à Montpellier, créée en 2014, 85 salariés, chiffre d'affaires estimé de 14 millions d'euros. Vendue dans ses 12 boutiques, en parfumeries et en ligne. Positionnement : naturel et relaxation.
+
+Accroche : lancement récent d'une gamme bien-être « Rituels du soir ».
+
+Signaux : lancement de la gamme « Rituels du soir » (huile de massage, brume d'oreiller) annoncé dans Les Echos en septembre 2026 ; offre d'emploi pour un « chef de projet parfum » publiée en octobre 2026 ; dans une interview à Cosmétique Mag, la fondatrice regrette le manque de réactivité de son fournisseur actuel de parfums.
+
+Pourquoi cette entreprise : elle prépare activement une nouvelle gamme bien-être, recrute un profil parfum et n'est pas satisfaite de son fournisseur. Elle cherche un partenaire d'innovation en parfumerie.
+
+Produits Givaudan adaptés : FB-140 Lavande Sérénité pour la brume d'oreiller et l'huile de massage ; atelier de co-création pour la suite de la gamme.
+
+Contact : Élise Marchand, fondatrice et directrice générale. Identifiée sur le site de la marque et dans la presse ; aucun échange pour l'instant.
+
+Profil Digital Twin : DISC Influent. Mobiles SONCAS : Nouveauté et Sympathie. Passionnée, elle parle d'émotions et de sensations plus que de technique. Phrase typique : « Je veux qu'on sente le calme en ouvrant le flacon. » Objection : « Les grands groupes ne prennent pas le temps avec les marques comme la nôtre. » Information cachée, révélée seulement si on l'interroge sur son fournisseur : elle a raté le lancement de Noël 2025 à cause d'un échantillon arrivé avec cinq semaines de retard.
+
+Données de score : lancement 25 ; recrutement 15 ; tendance 15 (bien-être) ; fournisseur 15 (insatisfaction connue) ; taille 10 ; produit adapté 10 ; porte d'entrée 5. Score total : 95/100.
+
+Prochaine étape : obtenir un premier rendez-vous et proposer un échantillon de FB-140 sous 5 jours ouvrés.
+
+XXIX. Fiche prospect — Capilla Nova (score 93/100)
+
+Identité : marque de soins capillaires premium basée à Paris, créée en 2019, 40 salariés, chiffre d'affaires de 6 millions d'euros, croissance de 35 % par an. Vendue en salons de coiffure et en ligne.
+
+Accroche : lancement d'une brume parfumée pour cheveux prévu en 2027.
+
+Signaux : annonce d'une brume parfumée pour cheveux au salon Cosmetic 360 en octobre 2026 ; offre d'emploi « formulateur capillaire » publiée en septembre 2026 ; levée de fonds de 4 millions d'euros en juin 2026.
+
+Pourquoi cette entreprise : forte croissance, levée de fonds récente et nouveau produit parfumé annoncé. Le parfum capillaire est une tendance en hausse.
+
+Produits Givaudan adaptés : FB-163 Figue Cèdre Capillaire, qui tient 8 heures sur cheveux.
+
+Contact : Karim Benali, directeur R&D, rencontré par Jordan Dubois au salon Cosmetic 360 en octobre 2026.
+
+Profil Digital Twin : DISC Dominant. Mobiles SONCAS : Nouveauté et Argent. Rapide, orienté résultats. Phrase typique : « Combien de temps ça tient sur cheveux, concrètement ? » Objection : « Notre fournisseur actuel est moins cher. » Information cachée, révélée seulement si on l'interroge sur le calendrier : le lancement est prévu en avril 2027 et le choix du parfum doit être fait avant fin janvier 2027.
+
+Données de score : lancement 25 ; recrutement 15 ; tendance 15 (capillaire) ; fournisseur 8 (pas de contrat exclusif connu) ; taille 10 ; produit adapté 10 ; porte d'entrée 10. Score total : 93/100.
+
+Prochaine étape : envoyer un échantillon de FB-163 et proposer un test de tenue sur cheveux.
+
+XXX. Fiche prospect — Lumen Derma (score 88/100)
+
+Identité : laboratoire de dermocosmétique basé à Toulouse, créé en 2011, 120 salariés, chiffre d'affaires de 22 millions d'euros. Vendu en pharmacie en France, en Belgique et en Italie.
+
+Accroche : nouvelle gamme dermocosmétique pour peaux sensibles.
+
+Signaux : annonce d'une gamme « Sensi » pour peaux sensibles dans son rapport annuel 2025 publié en mai 2026 ; offre d'emploi « responsable formulation » en octobre 2026.
+
+Pourquoi cette entreprise : grand laboratoire en pharmacie qui développe une gamme pour peaux sensibles, une tendance forte. Les exigences sur les allergènes demandent un vrai savoir-faire.
+
+Produits Givaudan adaptés : FB-155 Thé Blanc Pur comme base de départ, sans allergène à déclarer, mais un développement sur mesure sera nécessaire, car FB-155 n'est pas validé pour les peaux réactives.
+
+Contact : Dr Anne Rouquette, directrice scientifique, qui a rempli un formulaire de contact sur le site de Givaudan en octobre 2026.
+
+Profil Digital Twin : DISC Consciencieux. Mobile SONCAS : Sécurité. Exigeante et méthodique. Phrase typique : « Quelles études de tolérance avez-vous réalisées ? » Objection : « Un parfum dans une gamme peaux sensibles, c'est un risque. » Information cachée, révélée seulement si on l'interroge sur les attentes des pharmaciens : 40 % des clients de la marque demandent une version légèrement parfumée, d'où le projet.
+
+Données de score : lancement 25 ; recrutement 15 ; tendance 15 (peaux sensibles) ; fournisseur 8 ; taille 10 ; produit adapté 5 (sur mesure) ; porte d'entrée 10. Score total : 88/100.
+
+Prochaine étape : rappeler le Dr Rouquette et proposer un développement sur mesure avec un échantillon sous 3 semaines.
+
+XXXI. Fiche prospect — Solenza (score 85/100)
+
+Identité : marque de produits solaires basée à Nice, créée en 2008, 60 salariés, chiffre d'affaires de 11 millions d'euros. Vendue en grandes surfaces et en pharmacie.
+
+Accroche : refonte de toute la gamme solaire pour l'été 2027.
+
+Signaux : annonce de la refonte de la gamme dans Nice-Matin en août 2026 ; avis de consommateurs en ligne qui critiquent « l'odeur chimique » des laits solaires actuels.
+
+Pourquoi cette entreprise : la gamme entière va changer et les clients se plaignent de l'odeur actuelle. Un nouveau parfum est un argument direct pour la refonte.
+
+Produits Givaudan adaptés : FB-112 Ambre Solaire Bio, certifié COSMOS, pour les huiles et laits solaires (allergène à déclarer : coumarine).
+
+Contact : Marion Ferri, cheffe de produit, rencontrée au salon in-cosmetics de Paris en avril 2026.
+
+Profil Digital Twin : DISC Influent et Stable. Mobiles SONCAS : Sécurité et Confort. Aimable mais prudente. Phrase typique : « On ne veut surtout pas d'un nouveau problème d'odeur. » Objection : « Changer de fournisseur, c'est beaucoup de tests. » Information cachée, révélée seulement si on l'interroge sur le fournisseur actuel : il a augmenté ses prix de 15 % en 2026 et elle cherche à le remplacer.
+
+Données de score : lancement 25 ; recrutement 0 ; tendance 15 (solaire) ; fournisseur 15 (insatisfaction connue) ; taille 10 ; produit adapté 10 ; porte d'entrée 10. Score total : 85/100.
+
+Prochaine étape : envoyer FB-112 et proposer un test comparatif à l'aveugle avec le parfum actuel.
+
+XXXII. Fiche prospect — Hommage Paris (score 83/100)
+
+Identité : marque de soins pour hommes basée à Paris, créée en 2020, 25 salariés, chiffre d'affaires de 4 millions d'euros, croissance de 45 % par an. Vendue en ligne et chez les barbiers.
+
+Accroche : lancement d'une gamme de soins pour la barbe.
+
+Signaux : publication Instagram d'octobre 2026 qui annonce une gamme barbe pour 2027 ; offre d'emploi « chef de produit » publiée en septembre 2026.
+
+Pourquoi cette entreprise : marque en très forte croissance sur le marché des soins pour hommes, avec un nouveau lancement annoncé.
+
+Produits Givaudan adaptés : FB-191 Cuir Boisé Homme pour huiles à barbe et après-rasage.
+
+Contact : aucun contact identifié pour l'instant. Le fondateur, Hugo Lemaire, est cité dans la presse.
+
+Profil Digital Twin : DISC Dominant et Influent. Mobiles SONCAS : Orgueil et Nouveauté. Sûr de lui, attaché à l'image de sa marque. Phrase typique : « Il faut que le parfum soit reconnaissable entre mille. » Objection : « Je ne veux pas d'un parfum que tout le monde a déjà. » Information cachée, révélée seulement si on l'interroge sur ses ambitions : il prépare une entrée chez un grand distributeur de parfumerie en 2027.
+
+Données de score : lancement 25 ; recrutement 15 ; tendance 15 (homme) ; fournisseur 8 ; taille 10 (croissance supérieure à 20 %) ; produit adapté 10 ; porte d'entrée 0. Score total : 83/100.
+
+Prochaine étape : trouver un contact (via le salon ou une recommandation) avant toute prise de rendez-vous.
+
+XXXIII. Fiche prospect — Ondine & Sel (score 80/100)
+
+Identité : marque de cosmétiques marins basée à La Rochelle, créée en 2016, 30 salariés, chiffre d'affaires de 3 millions d'euros. Vendue en instituts de thalassothérapie et en ligne.
+
+Accroche : projet de gamme thalasso pour le corps.
+
+Signaux : la fondatrice a évoqué une gamme corps « thalasso » lors d'une conférence en juin 2026, sans date annoncée ; offre d'emploi « formulateur cosmétique » publiée en octobre 2026 ; plainte publique de la marque sur LinkedIn contre les ruptures de stock de son fournisseur de parfums.
+
+Pourquoi cette entreprise : projet de nouvelle gamme, recrutement en formulation et fournisseur actuel peu fiable.
+
+Produits Givaudan adaptés : FB-178 Néroli Marin pour gels douche et soins du corps.
+
+Contact : Sandrine Morel, fondatrice, qui a été recommandée par Mathilde Garat de la Savonnerie de l'Adour.
+
+Profil Digital Twin : DISC Stable. Mobiles SONCAS : Sécurité et Sympathie. Calme, loyale envers ses partenaires. Phrase typique : « Je veux un fournisseur qui livre à l'heure, c'est tout. » Objection : « Nous sommes petits, vos minimums de commande sont trop élevés. » Information cachée, révélée seulement si on l'interroge sur ses volumes : elle prévoit environ 150 kg de parfum par an, bien au-dessus du minimum de 25 kg par référence.
+
+Données de score : lancement 10 (projet évoqué) ; recrutement 15 ; tendance 15 (naturel) ; fournisseur 15 (insatisfaction connue) ; taille 5 ; produit adapté 10 ; porte d'entrée 10. Score total : 80/100.
+
+Prochaine étape : appeler Sandrine Morel en citant la recommandation de la Savonnerie de l'Adour.
+
+XXXIV. Fiche prospect — Petit Nuage (score 73/100)
+
+Identité : marque de soins pour bébés basée à Nantes, créée en 2018, 50 salariés, chiffre d'affaires de 9 millions d'euros. Vendue en pharmacie et en magasins bio.
+
+Accroche : lancement d'une gamme de soins bébé.
+
+Signaux : lancement d'une gamme « Câlin » (lait de toilette, crème) annoncé dans Ouest-France en juillet 2026.
+
+Pourquoi cette entreprise : la demande de soins bébé sans allergène augmente fortement, et la marque lance une nouvelle gamme.
+
+Produits Givaudan adaptés : aucun produit du catalogue n'est validé pour les moins de 3 ans ; un développement sur mesure est nécessaire, avec un échantillon sous 3 semaines.
+
+Contact : Julie Perrot, responsable R&D, rencontrée au salon in-cosmetics de Paris en avril 2026.
+
+Profil Digital Twin : DISC Consciencieux. Mobile SONCAS : Sécurité. Très prudente. Phrase typique : « Pour un bébé, je ne prends aucun risque. » Objection : « Pourquoi parfumer un produit pour bébé ? » Information cachée, révélée seulement si on l'interroge sur ses clients : les parents réclament une odeur « douce et rassurante », mais sans allergène à déclarer.
+
+Données de score : lancement 25 ; recrutement 0 ; tendance 15 (peaux sensibles) ; fournisseur 8 ; taille 10 ; produit adapté 5 (sur mesure) ; porte d'entrée 10. Score total : 73/100.
+
+Prochaine étape : proposer un développement sur mesure sans allergène à déclarer.
+
+XXXV. Fiche prospect — Bulle d'Écume (score 68/100)
+
+Identité : marque de gels douche et shampoings en recharge basée à Lille, créée en 2021, 35 salariés, chiffre d'affaires de 3 millions d'euros, croissance de 30 % par an. Vendue en magasins vrac et en ligne.
+
+Accroche : projet de gels douche en recharge.
+
+Signaux : projet de gels douche en recharge évoqué sur son site, sans date ; offre d'emploi « technicien R&D » publiée en octobre 2026.
+
+Pourquoi cette entreprise : marque en croissance sur la tendance de la recharge et du zéro déchet, avec un recrutement en R&D.
+
+Produits Givaudan adaptés : FB-047 Bois de Santal Doux et FB-178 Néroli Marin, qui tiennent bien dans les gels douche.
+
+Contact : aucun contact identifié pour l'instant.
+
+Profil Digital Twin : DISC Influent. Mobiles SONCAS : Nouveauté et Argent. Engagée sur l'écologie. Phrase typique : « Quel est l'impact environnemental de vos parfums ? » Objection : « Nos prix doivent rester bas. » Information cachée : aucune connue à ce stade.
+
+Données de score : lancement 10 (projet évoqué) ; recrutement 15 ; tendance 15 (recharge) ; fournisseur 8 ; taille 10 (croissance supérieure à 20 %) ; produit adapté 10 ; porte d'entrée 0. Score total : 68/100.
+
+Prochaine étape : identifier un contact R&D.
+
+XXXVI. Fiche prospect — Terre de Lys (score 53/100)
+
+Identité : marque de bougies et de brumes parfumées basée à Bordeaux, créée en 2017, 15 salariés, chiffre d'affaires de 2 millions d'euros. Vendue en concept stores.
+
+Accroche : projet de brumes parfumées pour le corps.
+
+Signaux : projet de brumes pour le corps évoqué sur Instagram en septembre 2026, sans date.
+
+Pourquoi cette entreprise : petite marque de parfum d'ambiance qui veut se diversifier vers le corps, une tendance bien-être.
+
+Produits Givaudan adaptés : FB-140 Lavande Sérénité pour les brumes.
+
+Contact : Lucie Darrigrand, fondatrice, identifiée sur Instagram ; aucun échange.
+
+Profil Digital Twin : DISC Influent. Mobiles SONCAS : Orgueil et Sympathie. Créative. Phrase typique : « Je veux un parfum qui raconte une histoire. » Objection : « Je n'ai pas le budget d'une grande marque. »
+
+Données de score : lancement 10 (projet évoqué) ; recrutement 0 ; tendance 15 (bien-être) ; fournisseur 8 ; taille 5 ; produit adapté 10 ; porte d'entrée 5. Score total : 53/100.
+
+Prochaine étape : prise de contact légère, sans priorité.
+
+XXXVII. Fiche prospect — Atelier Verdane (score 50/100)
+
+Identité : marque de soins naturels basée à Lyon, créée en 2015, 28 salariés, chiffre d'affaires de 3 millions d'euros. Vendue en magasins bio.
+
+Accroche : recrutement d'un formulateur, mais contrat exclusif avec IFF.
+
+Signaux : offre d'emploi « formulateur cosmétique naturel » en octobre 2026 ; communiqué de 2025 annonçant un contrat exclusif avec IFF jusqu'en 2028.
+
+Pourquoi cette entreprise : elle recrute et suit la tendance du naturel, mais son contrat exclusif avec IFF rend toute vente impossible avant 2028.
+
+Produits Givaudan adaptés : FB-031 Fleur d'Oranger Pure pourrait convenir après 2028.
+
+Contact : Paul Girard, directeur R&D, identifié sur le site ; aucun échange.
+
+Données de score : lancement 0 ; recrutement 15 ; tendance 15 (naturel) ; fournisseur 0 (contrat exclusif avec IFF) ; taille 5 ; produit adapté 10 ; porte d'entrée 5. Score total : 50/100.
+
+Prochaine étape : aucune action avant 2028 ; mettre une alerte sur la fin du contrat.
+
+XXXVIII. Alertes de veille
+
+Une alerte prévient le commercial quand un signal apparaît sur un client ou un prospect. Types d'alertes suivis : nouvelle offre d'emploi en R&D, en formulation ou en parfum ; annonce d'un lancement de gamme ; levée de fonds ; changement de dirigeant ; participation à un salon ; plainte publique contre un fournisseur ; fin d'un contrat exclusif.
+
+Pour créer une alerte, le commercial choisit une entreprise et un type de signal. L'alerte est vérifiée chaque semaine.
+
+Alertes recommandées : Atelier Verdane (fin du contrat exclusif avec IFF en 2028) ; Hommage Paris (apparition d'un contact R&D) ; Bulle d'Écume (date de lancement des recharges) ; Capilla Nova (choix du parfum avant fin janvier 2027).
+
+XXXIX. Veille — signaux récents par client et prospect
 
 Laiterie des Pyrénées : offre d'emploi « technicien R&D formulation allégée » (septembre 2026), signe que le projet moins sucré avance.
 
@@ -370,7 +634,7 @@ Brasserie du Béarn : article de presse sur la hausse des bières sans alcool en
 
 Maison Larrieu : publication Instagram d'octobre 2026 annonçant « une surprise aux agrumes pour Noël 2027 ».
 
-XXVII. Tendances du marché 2026-2027
+XL. Tendances du marché 2026-2027
 
 Réduction du sucre : la pression du Nutri-Score et des taxes sur les boissons sucrées pousse les industriels à réduire le sucre de 20 à 30 %. Les modulateurs de goût comme SweetBalance sont la réponse principale.
 
@@ -382,9 +646,17 @@ Cosmétique : la demande de produits « sans allergène » et adaptés aux peaux
 
 Boissons sans alcool : les bières et apéritifs sans alcool progressent fortement chez les brasseurs artisanaux, qui cherchent à retrouver un goût plus riche.
 
-XXVIII. Concurrence et réponses aux objections
+Beauté bien-être : les soins qui promettent détente et meilleur sommeil (huiles, brumes d'oreiller) sont la catégorie la plus dynamique de la cosmétique en France.
 
-Concurrents principaux : Symrise, IFF et dsm-firmenich. Symrise est souvent moins cher sur les arômes fruités ; IFF est fort en boissons ; dsm-firmenich est fort en parfumerie fine.
+Parfum capillaire : les brumes et soins parfumés pour cheveux progressent fortement chez les marques premium.
+
+Soins pour hommes : le marché des soins de la barbe et du visage pour hommes croît d'environ 10 % par an.
+
+Recharge et zéro déchet : les gels douche et shampoings vendus en recharge ou en vrac se développent, et les marques demandent des parfums stables dans ces formats.
+
+XLI. Concurrence et réponses aux objections
+
+Concurrents principaux : Symrise, IFF et dsm-firmenich. Symrise est souvent moins cher sur les arômes fruités ; IFF est fort en boissons ; dsm-firmenich est fort en parfumerie fine. En cosmétique, les petites marques travaillent aussi avec des maisons de composition indépendantes, souvent plus réactives mais moins équipées en tests de tolérance.
 
 Objection « Votre concurrent est moins cher » : rappeler le coût total, c'est-à-dire la stabilité du produit en rayon, la régularité entre les lots et l'accompagnement technique en laboratoire. Proposer un test comparatif à l'aveugle avant toute baisse de prix.
 
@@ -392,7 +664,7 @@ Objection « Les délais sont trop longs » : proposer un stock de sécurité r�
 
 Objection « Nous voulons du 100 % naturel » : présenter les produits certifiés naturels et fournir les certificats d'origine. Ne jamais affirmer qu'un produit est naturel ou bio sans vérifier sa fiche technique.
 
-XXIX. Procédure de préparation d'un rendez-vous client
+XLII. Procédure de préparation d'un rendez-vous client
 
 Avant chaque rendez-vous, le commercial doit : relire la fiche client, le Digital Twin du contact et le dernier compte rendu de visite ; vérifier les réclamations ouvertes et les demandes en attente ; préparer au maximum deux nouveaux produits à présenter, liés aux projets du client ; adapter son discours au profil DISC et aux mobiles SONCAS du contact ; emporter des échantillons si possible ; vérifier le niveau de remise autorisé.
 
@@ -400,7 +672,7 @@ Pour un prospect, le premier rendez-vous sert à découvrir ses projets avec la 
 
 Après le rendez-vous, le compte rendu doit être saisi dans le CRM sous 48 heures, avec les décisions prises, les actions à mener et la date du prochain contact.
 
-XXX. Scénarios d'entraînement avec les Digital Twins
+XLIII. Scénarios d'entraînement avec les Digital Twins
 
 Scénario 1, niveau facile — Premier rendez-vous avec Antoine Casaubon (Brasserie du Béarn). Objectif : obtenir un envoi d'échantillons. Réussite : le commercial découvre que le fournisseur actuel n'a pas de solution pour la bière sans alcool.
 
@@ -411,5 +683,7 @@ Scénario 3, niveau difficile — Négocier avec Marc Etchegaray après le retar
 Scénario 4, niveau difficile — Reconquérir Peio Harriet (Conserveries Basques). Objectif : obtenir un test de ProMask sur la gamme végétarienne. Réussite : le commercial ne parle pas de Bernard Lacoste comme d'un ami et découvre les lots non conformes du fournisseur actuel.
 
 Scénario 5, niveau moyen, en anglais — Rendez-vous avec Sean O'Brien (Atlantic Drinks). Objectif : rester sur la shortlist de l'appel d'offres zéro sucre. Réussite : le commercial reconnaît la question réglementaire en attente et découvre la date limite du 31 janvier 2027.
+
+Scénario 6, niveau moyen — Premier rendez-vous avec Élise Marchand (Maison Alizé), prospect cosmétique. Objectif : obtenir un test de FB-140 pour la gamme « Rituels du soir ». Réussite : le commercial découvre l'échantillon arrivé en retard chez son fournisseur actuel et rassure sur les délais.
 
 Grille d'évaluation d'un entraînement : le commercial a-t-il adapté son discours au profil DISC ? A-t-il posé des questions d'implication (SPIN) ? A-t-il présenté les produits avec la méthode CAP ? A-t-il traité les objections sans contredire ? A-t-il respecté les règles commerciales (remise maximale, délais, pas de promesse non vérifiée) ? A-t-il obtenu un engagement concret pour la suite ?
