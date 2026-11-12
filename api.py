@@ -18,6 +18,7 @@ from datetime import datetime
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -57,6 +58,12 @@ class Message(BaseModel):
     role: Literal["user", "assistant"]
     content: str = Field(..., min_length=1)
 
+
+
+@app.get("/", include_in_schema=False)
+def page():
+    """Affiche la page de l'assistant commercial."""
+    return FileResponse("index.html")
 
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=1, examples=["Prépare mon rendez-vous du 3 décembre avec la Laiterie des Pyrénées."])
