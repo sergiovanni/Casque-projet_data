@@ -80,6 +80,14 @@ def health():
 def search(req: AskRequest):
     """Retourne seulement les passages pertinents des documents commerciaux (sans appeler le LLM)."""
     return retrieve(req.question, req.top_k)
+
+from fastapi.responses import FileResponse
+
+
+@app.get("/", include_in_schema=False)
+def page():
+    """Affiche la page de l'assistant commercial."""
+    return FileResponse("index.html")
  
  
 @app.post("/ask", response_model=AskResponse, tags=["assistant commercial"])
