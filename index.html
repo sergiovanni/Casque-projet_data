@@ -1,1 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Assistant commercial · Givaudan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Réglages à adapter ---------- */
+  /* Voir aussi la config JavaScript en bas du fichier */
+
+  :root {
+    --paper: #EFECF4;
+    --surface: #FFFFFF;
+    --ink: #271D36;
+    --ink-soft: #6A6178;
+    --iris: #6B4FA0;
+    --iris-pale: #E4DDF0;
+    --vetiver: #5F7350;
+    --line: #DAD4E3;
+    --danger: #A3324A;
+    --bloom-a: rgba(107, 79, 160, 0.22);
+    --bloom-b: rgba(95, 115, 80, 0.16);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1A1522;
+      --surface: #241D2F;
+      --ink: #EEE9F5;
+      --ink-soft: #A79DB6;
+      --iris: #B39BE0;
+      --iris-pale: #352A47;
+      --vetiver: #A6B894;
+      --line: #3A3148;
+      --danger: #E58A9C;
+      --bloom-a: rgba(179, 155, 224, 0.18);
+      --bloom-b: rgba(166, 184, 148, 0.10);
+      color-scheme: dark;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.6 "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: grid;
+    grid-template-columns: 248px 1fr;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* ---------- Barre latérale ---------- */
+  aside {
+    border-right: 1px solid var(--line);
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .brand {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+  }
+  .brand small {
+    display: block;
+    font-family: "Figtree", system-ui, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .new-chat {
+    font: inherit;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: left;
+    cursor: pointer;
+  }
+  .new-chat:hover { border-color: var(--iris); }
+  .history-title { font-size: 0.85rem; color: var(--ink-soft); margin: 0 0 8px; }
+  .history { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .history li {
+    font-size: 0.9rem;
+    padding: 6px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--ink-soft);
+  }
+  .history .empty { font-style: italic; }
+  .user-card {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--iris);
+    color: var(--paper);
+    display: grid;
+    place-items: center;
+    font-weight: 600;
+  }
+  .user-card span { color: var(--ink-soft); display: block; font-size: 0.8rem; }
+
+  /* ---------- Zone principale ---------- */
+  main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px 24px 24px;
+  }
+  .column { max-width: 720px; margin: 0 auto; }
+
+  /* Accueil : le seul moment animé de la page */
+  .welcome {
+    min-height: 58vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .bloom {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(40% 50% at 30% 45%, var(--bloom-a), transparent 70%),
+      radial-gradient(35% 45% at 68% 60%, var(--bloom-b), transparent 70%);
+    filter: blur(20px);
+    animation: diffuse 2.4s ease-out both;
+  }
+  @keyframes diffuse {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .welcome > *:not(.bloom) { position: relative; z-index: 1; }
+  .welcome h1 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    line-height: 1.05;
+    margin: 0 0 16px;
+    letter-spacing: -0.01em;
+  }
+  .welcome p {
+    margin: 0 0 32px;
+    color: var(--ink-soft);
+    font-size: 1.1rem;
+    max-width: 52ch;
+  }
+  .suggestions { display: grid; gap: 10px; }
+  .suggestion {
+    font: inherit;
+    text-align: left;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: border-color .15s;
+  }
+  .suggestion:hover { border-color: var(--iris); }
+
+  /* Messages */
+  .messages { display: grid; gap: 28px; }
+  .msg-user {
+    justify-self: end;
+    max-width: 80%;
+    background: var(--iris);
+    color: var(--paper);
+    padding: 12px 18px;
+    border-radius: 18px 18px 4px 18px;
+    white-space: pre-wrap;
+  }
+  .msg-bot { max-width: 100%; }
+  .msg-bot .who {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--iris);
+    margin-bottom: 6px;
+  }
+  .msg-bot .body p { margin: 0 0 12px; }
+  .msg-bot .body ul { margin: 0 0 12px; padding-left: 20px; }
+  .msg-bot .body strong { font-weight: 600; }
+  .sources {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+  .msg-error {
+    color: var(--danger);
+    border-left: 3px solid var(--danger);
+    padding: 4px 0 4px 14px;
+  }
+  .typing { display: flex; gap: 6px; padding: 8px 0; }
+  .typing i {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--vetiver);
+    animation: pulse 1.2s infinite ease-in-out;
+  }
+  .typing i:nth-child(2) { animation-delay: .15s; }
+  .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes pulse { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+
+  /* Champ de saisie */
+  .composer {
+    padding: 12px 24px 24px;
+    background: linear-gradient(to top, var(--paper) 70%, transparent);
+  }
+  .composer form {
+    max-width: 720px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 10px 10px 10px 18px;
+  }
+  .composer form:focus-within { border-color: var(--iris); }
+  textarea {
+    flex: 1;
+    font: inherit;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    resize: none;
+    outline: none;
+    max-height: 180px;
+    padding: 6px 0;
+  }
+  textarea::placeholder { color: var(--ink-soft); }
+  .send {
+    font: inherit;
+    font-weight: 600;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 10px;
+    padding: 9px 16px;
+    cursor: pointer;
+  }
+  .send:disabled { opacity: .4; cursor: default; }
+  .hint { max-width: 720px; margin: 8px auto 0; font-size: 0.8rem; color: var(--ink-soft); text-align: center; }
+
+  :focus-visible { outline: 2px solid var(--iris); outline-offset: 2px; }
+
+  @media (max-width: 760px) {
+    body { grid-template-columns: 1fr; }
+    aside { display: none; }
+    .scroll { padding: 24px 16px 16px; }
+    .composer { padding: 10px 12px 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bloom, .typing i { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">Givaudan<small>Assistant commercial</small></div>
+  <button class="new-chat" type="button" id="newChat">Nouvelle conversation</button>
+  <div>
+    <p class="history-title">Questions de cette session</p>
+    <ul class="history" id="history"><li class="empty">Aucune question pour l’instant</li></ul>
+  </div>
+  <div class="user-card">
+    <div class="avatar" id="avatar">J</div>
+    <div><strong id="userName">Jordan</strong><span>Commercial</span></div>
+  </div>
+</aside>
+
+<main>
+  <div class="scroll" id="scroll">
+    <div class="column">
+      <section class="welcome" id="welcome">
+        <div class="bloom" aria-hidden="true"></div>
+        <h1 id="greeting">Bonjour Jordan</h1>
+        <p>Dites-moi quel type de marque vous cherchez. Je vous explique pourquoi elle pourrait avoir besoin de Givaudan, et comment l’aborder.</p>
+        <div class="suggestions">
+          <button class="suggestion" type="button">Trouve-moi des marques de cosmétiques françaises qui préparent de nouveaux parfums</button>
+          <button class="suggestion" type="button">Quelles marques de soins naturels lancent de nouvelles gammes en ce moment ?</button>
+          <button class="suggestion" type="button">Aide-moi à préparer un premier rendez-vous avec une marque de cosmétiques bio</button>
+        </div>
+      </section>
+      <div class="messages" id="messages" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="composer">
+    <form id="form">
+      <textarea id="input" rows="1" placeholder="Posez votre question…" aria-label="Votre question"></textarea>
+      <button class="send" id="send" type="submit" disabled>Envoyer</button>
+    </form>
+    <p class="hint">Entrée pour envoyer, Maj + Entrée pour aller à la ligne</p>
+  </div>
+</main>
+
+<script>
+  /* ================= CONFIG À ADAPTER =================
+     Vérifie ces deux réglages dans http://127.0.0.1:8000/docs
+     (route POST /ask → "Request body") */
+  const CONFIG = {
+    // Même serveur que api.py ; si tu ouvres le fichier en double-cliquant, on vise uvicorn en local
+    apiUrl: location.protocol.startsWith("http") ? "/ask" : "http://127.0.0.1:8000/ask",
+    // Nom du champ attendu par l'API dans le corps de la requête
+    questionField: "question",
+    userName: "Jordan",
+  };
+  /* ==================================================== */
+
+  const $ = (id) => document.getElementById(id);
+  const form = $("form"), input = $("input"), send = $("send");
+  const messages = $("messages"), welcome = $("welcome"), scroll = $("scroll"), history = $("history");
+
+  $("greeting").textContent = `Bonjour ${CONFIG.userName}`;
+  $("userName").textContent = CONFIG.userName;
+  $("avatar").textContent = CONFIG.userName.charAt(0).toUpperCase();
+
+  // Échappe le HTML, puis applique un markdown très simple (gras, listes, paragraphes)
+  function format(text) {
+    const esc = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return esc.split(/\n{2,}/).map(block => {
+      const lines = block.split("\n");
+      if (lines.every(l => /^\s*([-*•]|\d+\.)\s+/.test(l))) {
+        return "<ul>" + lines.map(l => "<li>" + l.replace(/^\s*([-*•]|\d+\.)\s+/, "") + "</li>").join("") + "</ul>";
+      }
+      return "<p>" + lines.join("<br>") + "</p>";
+    }).join("").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  }
+
+  // Lit la réponse quel que soit le nom du champ renvoyé par api.py
+  function extractAnswer(data) {
+    if (typeof data === "string") return data;
+    return data.answer ?? data.response ?? data.reponse ?? data.réponse ?? data.result ?? data.output
+      ?? JSON.stringify(data, null, 2);
+  }
+
+  function addUser(text) {
+    const el = document.createElement("div");
+    el.className = "msg-user";
+    el.textContent = text;
+    messages.appendChild(el);
+  }
+
+  function addBot() {
+    const el = document.createElement("div");
+    el.className = "msg-bot";
+    el.innerHTML = '<div class="who">Assistant</div><div class="body"><div class="typing"><i></i><i></i><i></i></div></div>';
+    messages.appendChild(el);
+    return el.querySelector(".body");
+  }
+
+  function toBottom() { scroll.scrollTop = scroll.scrollHeight; }
+
+  function addToHistory(text) {
+    const empty = history.querySelector(".empty");
+    if (empty) empty.remove();
+    const li = document.createElement("li");
+    li.textContent = text;
+    li.title = text;
+    history.prepend(li);
+  }
+
+  async function ask(question) {
+    welcome.hidden = true;
+    addUser(question);
+    addToHistory(question);
+    const body = addBot();
+    toBottom();
+    send.disabled = true;
+
+    try {
+      const res = await fetch(CONFIG.apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [CONFIG.questionField]: question }),
+      });
+      if (res.status === 422) {
+        throw new Error(`L’API refuse le format de la question. Ouvre /docs et vérifie le nom du champ attendu, puis change "questionField" dans la config du fichier.`);
+      }
+      if (!res.ok) throw new Error(`L’API a répondu avec une erreur ${res.status}. Regarde le terminal où tourne uvicorn pour voir le détail.`);
+
+      const data = await res.json();
+      body.innerHTML = format(String(extractAnswer(data)));
+
+      if (Array.isArray(data.sources) && data.sources.length) {
+        const s = document.createElement("div");
+        s.className = "sources";
+        s.textContent = "Sources : " + data.sources.map(x => typeof x === "string" ? x : (x.chapter || x.title || x.source || JSON.stringify(x))).join(", ");
+        body.appendChild(s);
+      }
+    } catch (err) {
+      const msg = err instanceof TypeError
+        ? "Impossible de joindre l’API. Vérifie que le serveur tourne avec : uvicorn api:app --reload"
+        : err.message;
+      body.innerHTML = `<p class="msg-error">${msg}</p>`;
+    } finally {
+      send.disabled = !input.value.trim();
+      toBottom();
+    }
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = "";
+    input.style.height = "auto";
+    ask(q);
+  });
+
+  input.addEventListener("input", () => {
+    send.disabled = !input.value.trim();
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+  });
+
+  document.querySelectorAll(".suggestion").forEach(btn =>
+    btn.addEventListener("click", () => ask(btn.textContent.trim()))
+  );
+
+  $("newChat").addEventListener("click", () => {
+    messages.innerHTML = "";
+    welcome.hidden = false;
+    input.focus();
+  });
+</script>
+</body>
+</html>
 
