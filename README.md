@@ -8,6 +8,56 @@ local (Ollama). Tout tourne en local : pas de service payant, pas de clé API.
 > minimums de commande et délais sont vérifiés en Python (`scoring.py`, `rules.py`). Le LLM rédige
 > seulement du texte à partir de données déjà vérifiées.
 
+## Présentation du projet
+
+Le **Givaudan AI Sales Copilot** est un prototype de copilote pour Jordan Dubois, commercial sur le
+secteur France Sud-Ouest. Il aide à préparer les rendez-vous, retrouver des informations commerciales,
+identifier les prospects cosmétiques prioritaires et s'entraîner à conduire un entretien.
+
+Le projet combine une API FastAPI, une interface web (`index.html`), une base documentaire locale,
+une recherche sémantique dans ChromaDB et des modèles exécutés avec Ollama. Il ne s'agit pas d'un
+modèle entraîné spécifiquement sur les données du projet : les informations sont fournies au modèle
+au moment de la requête.
+
+### Données utilisées
+
+| Source | Contenu | Usage |
+|---|---|---|
+| `story.txt` | Règles commerciales, méthodes de vente, catalogue de produits, clients, prospects, comptes rendus, profils de simulation et veille. Les données de démonstration sont fictives. | Source de vérité lue par `knowledge.py` et indexée par `ingest.py`. |
+| `questions_test.md` | Questions et éléments de réponse attendus, organisés par mode et par écran. | Tests fonctionnels de référence avec `eval_questions.py`. |
+| `index.html` | Interface du prototype. | Servie à la racine de l'API (`http://127.0.0.1:8000/`). |
+
+`story.txt` est la source de données du prototype : les règles et fiches métier doivent y être
+modifiées, et non codées en dur dans les prompts. La base vectorielle `chroma_db/` est une donnée
+générée à partir de ce fichier ; elle doit être reconstruite après une modification de la base ou
+du modèle d'embeddings.
+
+### Architecture et parcours d'une requête
+
+1. `knowledge.py` lit et structure les sections de `story.txt` (entreprises, produits, prospects,
+   contacts et règles).
+2. `ingest.py` découpe les documents et les indexe dans ChromaDB avec leurs métadonnées. `rag.py`
+   effectue les recherches sémantiques et communique avec Ollama.
+3. Selon le parcours, `scoring.py` calcule le classement des prospects et `rules.py` vérifie les
+   contraintes métier. Ces calculs ne sont pas délégués au modèle.
+4. `api.py` assemble les sources retrouvées et les faits calculés, puis appelle le LLM pour les
+   réponses rédigées, les pitchs et les simulations.
+5. `prompts.py` définit les consignes des différents modes ; l'API expose également les données
+   structurées nécessaires aux écrans sans appel à l'IA.
+
+### Principes et limites du prototype
+
+- **Données traçables** : l'Assistant renvoie les passages utilisés et sépare les faits vérifiés de
+  la réponse générée. Une réponse rédigée par le LLM peut néanmoins comporter des erreurs.
+- **Règles déterministes** : le classement des prospects et les contrôles commerciaux sont calculés
+  par Python ; le Coach s'appuie aussi sur ces contrôles pour évaluer le respect des règles.
+- **Traitement local** : la recherche et la génération utilisent ChromaDB et Ollama sur la machine
+  qui exécute le projet ; aucune API de génération externe n'est configurée.
+- **État temporaire** : les conversations de Digital Twin sont conservées en mémoire et disparaissent
+  au redémarrage de l'API. Les alertes sont enregistrées dans `alerts.json`.
+- **Fonctionnalités hors périmètre** : les pièces jointes (`POST /attach`) ne sont pas disponibles
+  (HTTP 501). La transcription vocale est facultative et nécessite `faster-whisper`.
+
 ## Ce que fait l'API
 
 | Mode | Endpoints | Rôle |
@@ -69,9 +119,27 @@ python eval_questions.py   # évalue l'API sur questions_test.md (Ollama et l'AP
 ```
 
 Swagger : http://127.0.0.1:8000/docs
+Interface web : http://127.0.0.1:8000/
 
 Pour changer de modèle : variable d'environnement `LLM_MODEL` (ou valeur par défaut dans `config.py`).
 Si vous changez `EMBED_MODEL`, relancez `python clean.py` puis `python ingest.py`.
+
+### Tests et évaluation
+
+`pytest` exécute les tests unitaires des règles et du scoring ainsi que les tests API avec un faux
+LLM ; Ollama n'est donc pas nécessaire pour cette suite. Pour évaluer les réponses sur l'API réelle,
+lancez d'abord Ollama, l'indexation et l'API, puis :
+
+```bash
+python eval_questions.py
+python eval_questions.py --limit 5
+python eval_questions.py --only "Axe 02"
+python eval_questions.py --url http://127.0.0.1:8010
+```
+
+Le script écrit `rapport_eval.md`. Son taux de réussite est un indicateur automatique fondé sur la
+présence d'éléments précis (noms, chiffres, références) dans la réponse ; il ne remplace pas une
+relecture qualitative, et certaines questions ne sont pas évaluées automatiquement.
 
 ## Endpoints, écran par écran (exemples curl)
 
@@ -142,7 +210,7 @@ L'identifiant d'une entreprise est son nom sans accents, en minuscules, avec des
 | `LLM_MODEL` | `llama3.2:3b` |
 | `EMBED_MODEL` | `nomic-embed-text` |
 | `OLLAMA_HOST` | `http://localhost:11434` |
-| `NUM_CTX` | `8192` (contexte du LLM, en tokens) |
+| `NUM_CTX` | `4096` (contexte du LLM, en tokens) |
 | `CHROMA_DIR` / `COLLECTION_NAME` | `./chroma_db` / `knowledge` |
 | `KNOWLEDGE_PATH` | `./story.txt` |
 | `CHUNK_SIZE` / `WHOLE_SECTION_MAX` | `1000` / `3000` (caractères ; une section plus courte n'est pas découpée) |
